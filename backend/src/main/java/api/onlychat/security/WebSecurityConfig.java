@@ -55,7 +55,7 @@ public class WebSecurityConfig {
         authProvider.setUserDetailsService(new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return repository.findUserAccountByUsername(username)
+                return repository.findUserAccountByEmail(username)
                         .orElseThrow(() -> new UsernameNotFoundException(username));
             }
         });

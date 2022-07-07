@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserAccountService {
@@ -30,8 +31,8 @@ public class UserAccountService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<UserAccount> findUserAccountByUsername(String userName){
-        return repository.findUserAccountByUsername(userName);
+    public Optional<UserAccount> findUserAccountByUsername(String email){
+        return repository.findUserAccountByEmail(email);
     }
 
     @Transactional
@@ -49,6 +50,20 @@ public class UserAccountService {
             user.setGender(newUser.getGender());
             user.setPhoto(newUser.getPhoto());
             repository.saveAndFlush(user);
+        }
+        catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    @Transactional(readOnly = true)
+        public Set<UserAccount> getContacts(int id) throws Exception{
+        try {
+            Set<UserAccount> contacts = repository.getContacts(id);
+            if (contacts.isEmpty())
+                throw new UserBadRequestException("");
+
+            return contacts;
         }
         catch (Exception e){
             throw new Exception(e);

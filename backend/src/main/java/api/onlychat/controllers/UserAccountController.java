@@ -6,17 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserAccountController {
     @Autowired
-    private UserAccountService service;
+    private UserAccountService userService;
+//    @Autowired
+//    private ContactService contactService;
 
     @GetMapping
     public List<UserAccount> getAllUserAccounts() throws Exception{
         try {
-            return service.getAllUserAccounts();
+            return userService.getAllUserAccounts();
         }
         catch (Exception e){
             throw new Exception(e);
@@ -26,7 +30,17 @@ public class UserAccountController {
     @PostMapping("/cadastrar")
     public void addUserAccount(@RequestBody UserAccount user) throws Exception{
         try {
-            service.addUserAccount(user);
+            userService.addUserAccount(user);
+        }
+        catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    @GetMapping("/{id}/contacts")
+    public Set<UserAccount> getContacts(@PathVariable int id) throws Exception{
+        try {
+            return userService.getContacts(id);
         }
         catch (Exception e){
             throw new Exception(e);
