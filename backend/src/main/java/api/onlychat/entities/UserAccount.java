@@ -6,9 +6,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_account")
 public class UserAccount implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +21,22 @@ public class UserAccount implements UserDetails {
     private String gender;
     private String photo;
 
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "user_contact",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "contact_id")
+    )
+    Set<Contact> contacts = new HashSet<>();
+
     public UserAccount (){}
+
+    public UserAccount(Long id, String email, String name, String photo) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.photo = photo;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -98,5 +115,13 @@ public class UserAccount implements UserDetails {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public Set<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(Set<Contact> contacts) {
+        this.contacts = contacts;
     }
 }

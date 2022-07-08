@@ -56,17 +56,17 @@ public class UserAccountService {
         }
     }
 
-    @Transactional(readOnly = true)
-        public Set<UserAccount> getContacts(int id) throws Exception{
-        try {
-            Set<UserAccount> contacts = repository.getContacts(id);
-            if (contacts.isEmpty())
-                throw new UserBadRequestException("");
-
-            return contacts;
-        }
-        catch (Exception e){
-            throw new Exception(e);
-        }
-    }
+//    @Transactional(readOnly = true)
+//        public Set<UserAccount> getContacts(int id) throws Exception{
+//        try {
+//            Set<UserAccount> contacts = repository.getContacts(id);
+//            if (contacts.isEmpty())
+//                throw new UserBadRequestException("");
+//
+//            return contacts;
+//        }
+//        catch (Exception e){
+//            throw new Exception(e);
+//        }
+//    }
 }

@@ -37,13 +37,13 @@ public class UserAccountController {
         }
     }
 
-    @GetMapping("/{id}/contacts")
-    public Set<UserAccount> getContacts(@PathVariable int id) throws Exception{
-        try {
-            return userService.getContacts(id);
-        }
-        catch (Exception e){
-            throw new Exception(e);
-        }
-    }
+//    @GetMapping("/{id}/contacts")
+//    public Set<UserAccount> getContacts(@PathVariable int id) throws Exception{
+//        try {
+//            return userService.getContacts(id);
+//        }
+//        catch (Exception e){
+//            throw new Exception(e);
+//        }
+//    }
 }

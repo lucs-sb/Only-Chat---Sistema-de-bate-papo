@@ -33,6 +33,7 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/user/cadastrar").permitAll()
+                .antMatchers(HttpMethod.GET, "/h2/**").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic()
                 .and().authenticationProvider(authProvider());

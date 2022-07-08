@@ -12,10 +12,11 @@ public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JoinColumn(name = "user_id")
-    private UserAccount user;
-    @JoinColumn(name = "contact")
-    private UserAccount contact;
+
+    private String nome;
+    private String email;
+    private String photo;
+
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private Date date_time;
@@ -31,14 +32,6 @@ public class Contact {
         this.id = id;
     }
 
-    public UserAccount getUser() {
-        return user;
-    }
-
-    public void setUser(UserAccount user) {
-        this.user = user;
-    }
-
     public Date getDate_time() {
         return date_time;
     }
@@ -47,11 +40,27 @@ public class Contact {
         this.date_time = date_time;
     }
 
-    public UserAccount getContact() {
-        return contact;
+    public String getNome() {
+        return nome;
     }
 
-    public void setContact(UserAccount contact) {
-        this.contact = contact;
+    public void setNome(String name) {
+        this.nome = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }
