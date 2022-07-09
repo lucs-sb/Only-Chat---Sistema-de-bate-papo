@@ -3,6 +3,7 @@ package api.onlychat.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -13,13 +14,14 @@ public class Contact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long principal;
+
     private String nome;
     private String email;
     private String photo;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private Date date_time;
+    private LocalDateTime date_time;
 
     public Contact() {
     }
@@ -32,11 +34,11 @@ public class Contact {
         this.id = id;
     }
 
-    public Date getDate_time() {
+    public LocalDateTime getDate_time() {
         return date_time;
     }
 
-    public void setDate_time(Date date_time) {
+    public void setDate_time(LocalDateTime date_time) {
         this.date_time = date_time;
     }
 
@@ -62,5 +64,13 @@ public class Contact {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public Long getPrincipal() {
+        return principal;
+    }
+
+    public void setPrincipal(Long principal) {
+        this.principal = principal;
     }
 }

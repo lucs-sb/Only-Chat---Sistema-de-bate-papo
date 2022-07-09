@@ -1,13 +1,16 @@
 package api.onlychat.services;
 
+import api.onlychat.entities.Contact;
 import api.onlychat.entities.UserAccount;
 import api.onlychat.exceptionHandler.User.UserBadRequestException;
+import api.onlychat.repositories.ContactRepository;
 import api.onlychat.repositories.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -16,33 +19,17 @@ import java.util.Set;
 public class UserAccountService {
     @Autowired
     private UserAccountRepository repository;
-
+    @Autowired
+    private ContactRepository contactRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Transactional(readOnly = true)
-    public List<UserAccount> getAllUserAccounts() throws Exception{
-        try {
-            return repository.findAll();
-        }
-        catch (Exception e){
-            throw new Exception(e);
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<UserAccount> findUserAccountByUsername(String email){
-        return repository.findUserAccountByEmail(email);
-    }
 
     @Transactional
     public void addUserAccount(UserAccount newUser) throws Exception{
         try {
-
             UserAccount user = repository.getUserByEmail(newUser.getEmail());
-            if (user != null){
+            if (user != null)
                 throw new UserBadRequestException("Usuário já existe");
-            }
             user = new UserAccount();
             user.setEmail(newUser.getEmail());
             user.setPassword(passwordEncoder.encode(newUser.getPassword()));
@@ -56,14 +43,39 @@ public class UserAccountService {
         }
     }
 
-//    @Transactional(readOnly = true)
-//        public Set<UserAccount> getContacts(int id) throws Exception{
+    @Transactional
+    public void addContact(Long userLogado, UserAccount newContact) throws Exception{
+        try {
+            Optional<UserAccount> user = repository.findById(userLogado);
+            if (user.isEmpty())
+                throw new Exception("");
+
+            Contact contact = contactRepository.findByPrincipal(userLogado);
+            if (contact != null)
+                throw new Exception("");
+
+            contact = new Contact();
+            contact.setPrincipal(userLogado);
+            contact.setEmail(newContact.getEmail());
+            contact.setNome(newContact.getName());
+            contact.setPhoto(newContact.getPhoto());
+            contact.setDate_time(LocalDateTime.now());
+            contactRepository.saveAndFlush(contact);
+
+            user.get().getContacts().add(contact);
+        }
+        catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+//    public void saveNewContact(Long userLogado, Contact newContact) throws Exception{
 //        try {
-//            Set<UserAccount> contacts = repository.getContacts(id);
-//            if (contacts.isEmpty())
-//                throw new UserBadRequestException("");
+//            Optional<UserAccount> user = repository.findById(userLogado);
+//            if (user.isEmpty())
+//                throw new Exception("");
 //
-//            return contacts;
+//            user.get().getContacts().add(newContact);
 //        }
 //        catch (Exception e){
 //            throw new Exception(e);

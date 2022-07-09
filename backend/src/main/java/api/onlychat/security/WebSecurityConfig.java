@@ -28,15 +28,30 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+//                .cors(withDefaults())
+//                .csrf().disable()
+//                .authorizeRequests()
+//                .mvcMatchers("/h2/**", "/api/user/cadastrar").permitAll()
+//                .anyRequest().authenticated()
+//                .and().httpBasic()
+//                .and().authenticationProvider(authProvider());
+//        return http.build();
         http
                 .cors(withDefaults())
-                .csrf().disable()
+                .httpBasic()
+                .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/user/cadastrar").permitAll()
-                .antMatchers(HttpMethod.GET, "/h2/**").permitAll()
+                .antMatchers("/h2/**", "/api/user/**").permitAll()
+                .and()
+                .authorizeRequests()
                 .anyRequest().authenticated()
-                .and().httpBasic()
-                .and().authenticationProvider(authProvider());
+                .and()
+                .headers().frameOptions().disable()
+                .and()
+                .csrf().ignoringAntMatchers("/h2/**", "/api/user/**")
+                .and()
+                .authenticationProvider(authProvider());
         return http.build();
     }
 

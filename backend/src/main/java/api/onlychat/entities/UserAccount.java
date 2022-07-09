@@ -21,7 +21,7 @@ public class UserAccount implements UserDetails {
     private String gender;
     private String photo;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @OneToMany(cascade = { CascadeType.ALL })
     @JoinTable(
             name = "user_contact",
             joinColumns = @JoinColumn(name = "user_id"),

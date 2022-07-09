@@ -9,7 +9,12 @@ import java.util.Set;
 
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, Long> {
-//    @Query(value = "SELECT c.id, c.user_id, c.date_time, c.name, c.photo, c.email" +
-//            "FROM contacts AS c INNER JOIN messages AS m ON m.from = c.user_id")
-//    Set<Contact> getContacts();
+    @Query(value = "SELECT c.* " +
+            "FROM contact AS c INNER JOIN user_contact AS us " +
+            "WHERE us.user_id = :paramid ORDER BY c.date_time", nativeQuery = true)
+    Set<Contact> getContacts(int paramid);
+
+    Contact findByPrincipal(Long principal);
+
+    //Contact findByEmail(String email);
 }
