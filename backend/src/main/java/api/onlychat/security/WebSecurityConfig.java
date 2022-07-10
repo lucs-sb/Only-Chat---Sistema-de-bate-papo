@@ -30,12 +30,19 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors(withDefaults())
-                .csrf().disable()
+                .httpBasic()
+                .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/user/cadastrar").permitAll()
+                .antMatchers("/h2/**", "/api/user/**").permitAll()
+                .and()
+                .authorizeRequests()
                 .anyRequest().authenticated()
-                .and().httpBasic()
-                .and().authenticationProvider(authProvider());
+                .and()
+                .headers().frameOptions().disable()
+                .and()
+                .csrf().ignoringAntMatchers("/h2/**", "/api/user/**")
+                .and()
+                .authenticationProvider(authProvider());
         return http.build();
     }
 
@@ -55,8 +62,9 @@ public class WebSecurityConfig {
         authProvider.setUserDetailsService(new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return repository.findUserAccountByUsername(username)
+                return repository.findUserAccountByEmail(username)
                         .orElseThrow(() -> new UsernameNotFoundException(username));
+
             }
         });
         authProvider.setPasswordEncoder(passwordEncorder());
