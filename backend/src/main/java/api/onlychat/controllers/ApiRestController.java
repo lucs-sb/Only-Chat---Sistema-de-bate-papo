@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class ApiRestController {
     @Autowired
     private UserAccountService userService;
 
-    @PostMapping("/user/cadastrar")
+    @PostMapping("/cadastrar")
     @ResponseStatus(HttpStatus.CREATED)
     public void addUserAccount(@RequestBody UserAccount user) throws Exception{
         try {
@@ -26,7 +26,7 @@ public class ApiRestController {
         }
     }
 
-    @GetMapping("/user/{id}/contact")
+    @GetMapping("/{id}/contact")
     public Set<Contact> getContacts(@PathVariable("id") Long userLogado) throws Exception{
         try {
             return userService.getContacts(userLogado);
@@ -36,7 +36,7 @@ public class ApiRestController {
         }
     }
 
-    @PostMapping("/user/{id}/contact")
+    @PostMapping("/{id}/contact")
     @ResponseStatus(HttpStatus.CREATED)
     public void addContact(@PathVariable("id") Long userLogado, @RequestBody UserAccount newContact) throws Exception{
         try {
@@ -47,7 +47,7 @@ public class ApiRestController {
         }
     }
 
-    @DeleteMapping("/user/{user}/contact/{contact}")
+    @DeleteMapping("/{user}/contact/{contact}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteContact(@PathVariable("user") Long userLogado, @PathVariable("contact") Long contact) throws Exception{
         try {
@@ -58,7 +58,7 @@ public class ApiRestController {
         }
     }
 
-    @RequestMapping("/user/{id}/busca")
+    @RequestMapping("/{id}/busca")
     public Set<Contact> findContacts(@PathVariable("id") Long userLogado, @RequestParam("busca") String busca) throws Exception{
         try {
             return userService.findContacts(userLogado, busca);
@@ -68,7 +68,7 @@ public class ApiRestController {
         }
     }
 
-    @RequestMapping("/user/{id}/adicionar")
+    @RequestMapping("/{id}/adicionar")
     public Set<UserAccount> findUsers(@PathVariable("id") Long userLogado, @RequestParam("adicionar") String busca) throws Exception{
         try {
             return userService.findUsers(userLogado, busca);

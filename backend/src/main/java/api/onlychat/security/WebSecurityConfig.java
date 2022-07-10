@@ -33,15 +33,14 @@ public class WebSecurityConfig {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/h2/**", "/api/user/**").permitAll()
-                .and()
-                .authorizeRequests()
+                .antMatchers("/h2/**", "/api/user/cadastrar").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .headers().frameOptions().disable()
                 .and()
-                .csrf().ignoringAntMatchers("/h2/**", "/api/user/**")
+                .csrf().ignoringAntMatchers("/h2/**", "/api/user/cadastrar")
                 .and()
+                .csrf().disable()
                 .authenticationProvider(authProvider());
         return http.build();
     }

@@ -20,7 +20,7 @@ import java.util.Set;
 @Service
 public class UserAccountService {
     @Autowired
-    private UserAccountRepository repository;
+    private UserAccountRepository userRepository;
     @Autowired
     private ContactRepository contactRepository;
     @Autowired
@@ -29,16 +29,17 @@ public class UserAccountService {
     @Transactional
     public void addUserAccount(UserAccount newUser) throws Exception{
         try {
-            UserAccount user = repository.getUserByEmail(newUser.getEmail());
+            UserAccount user = userRepository.getUserByEmail(newUser.getEmail());
             if (user != null)
                 throw new UserBadRequestException("Usuário já existe");
+
             user = new UserAccount();
             user.setEmail(newUser.getEmail());
             user.setPassword(passwordEncoder.encode(newUser.getPassword()));
             user.setName(newUser.getName());
             user.setGender(newUser.getGender());
             user.setPhoto(newUser.getPhoto());
-            repository.saveAndFlush(user);
+            userRepository.saveAndFlush(user);
         }
         catch (Exception e){
             throw new Exception(e);
@@ -48,7 +49,7 @@ public class UserAccountService {
     @Transactional(readOnly = true)
     public Set<Contact> getContacts(Long userLogado) throws Exception{
         try {
-            Optional<UserAccount> user = repository.findById(userLogado);
+            Optional<UserAccount> user = userRepository.findById(userLogado);
             if (user.isEmpty())
                 throw new UserNotFoundException("Usuário não encontrado");
 
@@ -66,7 +67,7 @@ public class UserAccountService {
     @Transactional
     public void addContact(Long userLogado, UserAccount newContact) throws Exception{
         try {
-            Optional<UserAccount> user = repository.findById(userLogado);
+            Optional<UserAccount> user = userRepository.findById(userLogado);
             if (user.isEmpty())
                 throw new UserNotFoundException("Usuário não encontrado");
 
@@ -94,14 +95,14 @@ public class UserAccountService {
         try {
             boolean exists = false;
 
-            Optional<UserAccount> user = repository.findById(userLogado);
+            Optional<UserAccount> user = userRepository.findById(userLogado);
             if (user.isEmpty())
                 throw new UserNotFoundException("Usuário não encontrado");
 
             for(Contact contact : user.get().getContacts()){
                 if (contactId.equals(contact.getId())) {
                     user.get().getContacts().remove(contact);
-                    repository.save(user.get());
+                    userRepository.save(user.get());
                     contactRepository.delete(contact);
                     exists = true;
                     break;
@@ -134,11 +135,11 @@ public class UserAccountService {
     @Transactional(readOnly = true)
     public Set<UserAccount> findUsers(Long userLogado, String busca) throws Exception{
         try {
-            Optional<UserAccount> logado = repository.findById(userLogado);
+            Optional<UserAccount> logado = userRepository.findById(userLogado);
             if (logado.isEmpty())
                 throw new UserNotFoundException("Usuário não encontrado");
 
-            Set<UserAccount> users = repository.findUsers(userLogado, busca);
+            Set<UserAccount> users = userRepository.findUsers(userLogado, busca);
             if (users.isEmpty())
                 throw new UserNotFoundException("Não há registro de usuários");
 
