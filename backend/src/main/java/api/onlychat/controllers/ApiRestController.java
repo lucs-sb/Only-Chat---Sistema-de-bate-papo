@@ -1,14 +1,12 @@
 package api.onlychat.controllers;
 
 import api.onlychat.entities.Contact;
-import api.onlychat.services.ContactService;
 import api.onlychat.services.UserAccountService;
 import api.onlychat.entities.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -16,8 +14,6 @@ import java.util.Set;
 public class ApiRestController {
     @Autowired
     private UserAccountService userService;
-    @Autowired
-    private ContactService contactService;
 
     @PostMapping("/user/cadastrar")
     @ResponseStatus(HttpStatus.CREATED)
@@ -30,21 +26,52 @@ public class ApiRestController {
         }
     }
 
-//    @GetMapping("/user/{id}/contacts")
-//    public Set<Contact> getContacts(@PathVariable int id) throws Exception{
-//        try {
-//            return contactService.getContacts(id);
-//        }
-//        catch (Exception e){
-//            throw new Exception(e);
-//        }
-//    }
+    @GetMapping("/user/{id}/contact")
+    public Set<Contact> getContacts(@PathVariable("id") Long userLogado) throws Exception{
+        try {
+            return userService.getContacts(userLogado);
+        }
+        catch (Exception e){
+            throw new Exception(e);
+        }
+    }
 
-    @PostMapping("/user/{id}/newcontact")
+    @PostMapping("/user/{id}/contact")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addContact(@PathVariable Long userLogado, @RequestBody UserAccount newContact) throws Exception{
+    public void addContact(@PathVariable("id") Long userLogado, @RequestBody UserAccount newContact) throws Exception{
         try {
             userService.addContact(userLogado, newContact);
+        }
+        catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    @DeleteMapping("/user/{user}/contact/{contact}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteContact(@PathVariable("user") Long userLogado, @PathVariable("contact") Long contact) throws Exception{
+        try {
+            userService.deleteContact(userLogado, contact);
+        }
+        catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    @RequestMapping("/user/{id}/busca")
+    public Set<Contact> findContacts(@PathVariable("id") Long userLogado, @RequestParam("busca") String busca) throws Exception{
+        try {
+            return userService.findContacts(userLogado, busca);
+        }
+        catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    @RequestMapping("/user/{id}/adicionar")
+    public Set<UserAccount> findUsers(@PathVariable("id") Long userLogado, @RequestParam("adicionar") String busca) throws Exception{
+        try {
+            return userService.findUsers(userLogado, busca);
         }
         catch (Exception e){
             throw new Exception(e);

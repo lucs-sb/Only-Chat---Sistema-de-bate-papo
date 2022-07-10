@@ -28,15 +28,6 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http
-//                .cors(withDefaults())
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .mvcMatchers("/h2/**", "/api/user/cadastrar").permitAll()
-//                .anyRequest().authenticated()
-//                .and().httpBasic()
-//                .and().authenticationProvider(authProvider());
-//        return http.build();
         http
                 .cors(withDefaults())
                 .httpBasic()
@@ -73,6 +64,7 @@ public class WebSecurityConfig {
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
                 return repository.findUserAccountByEmail(username)
                         .orElseThrow(() -> new UsernameNotFoundException(username));
+
             }
         });
         authProvider.setPasswordEncoder(passwordEncorder());

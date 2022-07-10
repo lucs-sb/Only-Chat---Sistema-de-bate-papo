@@ -1,4 +1,4 @@
-package api.onlychat.exceptionHandler.User;
+package api.onlychat.exceptionHandler.Contact;
 
 import api.onlychat.exceptionHandler.MessageExceptionHandler;
 import org.springframework.http.HttpStatus;
@@ -10,11 +10,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Date;
 
 @ControllerAdvice(basePackages = "api.onlychat.controllers")
-public class UserServiceAdvince {
+public class ContactAdvince {
     @ResponseBody
-    @ExceptionHandler(UserBadRequestException.class)
-    public ResponseEntity<MessageExceptionHandler> userBadRequest(UserBadRequestException exception){
+    @ExceptionHandler(ContactBadRequestException.class)
+    public ResponseEntity<MessageExceptionHandler> contactBadRequest(ContactBadRequestException exception){
         MessageExceptionHandler error = new MessageExceptionHandler(new Date(), HttpStatus.BAD_REQUEST.value(), exception.getMessage());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(ContactNotFoundException.class)
+    public ResponseEntity<MessageExceptionHandler> contactNotFound(ContactNotFoundException exception){
+        MessageExceptionHandler error = new MessageExceptionHandler(new Date(), HttpStatus.NOT_FOUND.value(), exception.getMessage());
+        return new  ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }

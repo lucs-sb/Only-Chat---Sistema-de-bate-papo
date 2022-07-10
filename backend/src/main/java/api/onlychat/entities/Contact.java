@@ -21,7 +21,7 @@ public class Contact {
     private String photo;
 
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime date_time;
+    private Date date_time;
 
     public Contact() {
     }
@@ -34,11 +34,11 @@ public class Contact {
         this.id = id;
     }
 
-    public LocalDateTime getDate_time() {
+    public Date getDate_time() {
         return date_time;
     }
 
-    public void setDate_time(LocalDateTime date_time) {
+    public void setDate_time(Date date_time) {
         this.date_time = date_time;
     }
 

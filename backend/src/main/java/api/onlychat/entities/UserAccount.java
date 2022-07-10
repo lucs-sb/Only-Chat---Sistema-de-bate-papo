@@ -38,6 +38,13 @@ public class UserAccount implements UserDetails {
         this.photo = photo;
     }
 
+    public UserAccount(String email, String name, String gender, String photo) {
+        this.gender = gender;
+        this.email = email;
+        this.name = name;
+        this.photo = photo;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>();
