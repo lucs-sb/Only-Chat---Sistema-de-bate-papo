@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "contact")
@@ -13,15 +14,21 @@ public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Long principal;
-
+    private Long friend;
     private String nome;
     private String email;
     private String photo;
-
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private Date date_time;
+    private LocalDateTime date_time;
+
+    @OneToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "contact_message",
+            joinColumns = @JoinColumn(name = "contact_id"),
+            inverseJoinColumns = @JoinColumn(name = "message_id")
+    )
+    Set<Message> messages = new HashSet<>();
 
     public Contact() {
     }
@@ -34,11 +41,11 @@ public class Contact {
         this.id = id;
     }
 
-    public Date getDate_time() {
+    public LocalDateTime getDate_time() {
         return date_time;
     }
 
-    public void setDate_time(Date date_time) {
+    public void setDate_time(LocalDateTime date_time) {
         this.date_time = date_time;
     }
 
@@ -72,5 +79,21 @@ public class Contact {
 
     public void setPrincipal(Long principal) {
         this.principal = principal;
+    }
+
+    public Long getFriend() {
+        return friend;
+    }
+
+    public void setFriend(Long friend) {
+        this.friend = friend;
+    }
+
+    public Set<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Message> messages) {
+        this.messages = messages;
     }
 }

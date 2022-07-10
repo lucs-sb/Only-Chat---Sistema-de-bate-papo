@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
@@ -53,11 +53,21 @@ public class UserAccountService {
             if (user.isEmpty())
                 throw new UserNotFoundException("Usuário não encontrado");
 
+            Set<Contact> contactsWithChats = contactRepository.findByChats(userLogado);
             Set<Contact> contacts = contactRepository.getContacts(userLogado);
-            if (contacts.isEmpty())
+
+            if (!contactsWithChats.isEmpty()){
+                for (Contact contact : contactsWithChats){
+                    contacts.removeIf(contact2 -> contact2 != null && contact.getId().equals(contact2.getId()));
+                }
+            }
+
+            contactsWithChats.addAll(contacts);
+
+            if (contactsWithChats.isEmpty())
                 throw new ContactNotFoundException("Usuário não contém contatos");
 
-            return contacts;
+            return contactsWithChats;
         }
         catch (Exception e){
             throw new Exception(e);
@@ -65,25 +75,30 @@ public class UserAccountService {
     }
 
     @Transactional
-    public void addContact(Long userLogado, UserAccount newContact) throws Exception{
+    public void addContact(Long userLogadoId, UserAccount newContact) throws Exception{
         try {
-            Optional<UserAccount> user = userRepository.findById(userLogado);
-            if (user.isEmpty())
+            Optional<UserAccount> userLogado = userRepository.findById(userLogadoId);
+            if (userLogado.isEmpty())
+                throw new UserNotFoundException("Usuário logado não encontrado");
+
+            Optional<UserAccount> friend = userRepository.findById(newContact.getId());
+            if (friend.isEmpty())
                 throw new UserNotFoundException("Usuário não encontrado");
 
-            Contact contact = contactRepository.findByPrincipalAndEmail(userLogado, newContact.getEmail());
+            Contact contact = contactRepository.findContactByPrincipalAndFriendAndEmail(userLogadoId, friend.get().getId(), friend.get().getEmail());
             if (contact != null)
                 throw new ContactBadRequestException("Esse contato já existe");
 
             contact = new Contact();
-            contact.setPrincipal(userLogado);
-            contact.setEmail(newContact.getEmail());
-            contact.setNome(newContact.getName());
-            contact.setPhoto(newContact.getPhoto());
-            contact.setDate_time(new Date());
+            contact.setPrincipal(userLogadoId);
+            contact.setFriend(friend.get().getId());
+            contact.setEmail(friend.get().getEmail());
+            contact.setNome(friend.get().getName());
+            contact.setPhoto(friend.get().getPhoto());
+            contact.setDate_time(LocalDateTime.now());
             contactRepository.saveAndFlush(contact);
 
-            user.get().getContacts().add(contact);
+            userLogado.get().getContacts().add(contact);
         }
         catch (Exception e){
             throw new Exception(e);
@@ -102,7 +117,6 @@ public class UserAccountService {
             for(Contact contact : user.get().getContacts()){
                 if (contactId.equals(contact.getId())) {
                     user.get().getContacts().remove(contact);
-                    userRepository.save(user.get());
                     contactRepository.delete(contact);
                     exists = true;
                     break;
@@ -110,8 +124,6 @@ public class UserAccountService {
             }
             if (!exists)
                 throw new ContactBadRequestException("O usuário não possui esse contato");
-
-
         }
         catch (Exception e){
             throw new Exception(e);
@@ -122,6 +134,16 @@ public class UserAccountService {
     public Set<Contact> findContacts(Long userLogado, String busca) throws Exception{
         try {
             Set<Contact> contacts = contactRepository.findContacts(userLogado, busca);
+            Set<Contact> contactsWithChats = contactRepository.findContactsWithChats(userLogado, busca);
+
+            if (!contactsWithChats.isEmpty()){
+                for (Contact contact : contactsWithChats){
+                    contacts.removeIf(contact2 -> contact2 != null && contact.getId().equals(contact2.getId()));
+                }
+            }
+
+            contacts.addAll(contactsWithChats);
+
             if (contacts.isEmpty())
                 throw new ContactNotFoundException("Não há registro de contatos para essa busca");
 

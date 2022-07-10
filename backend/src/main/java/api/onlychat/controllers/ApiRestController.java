@@ -1,6 +1,8 @@
 package api.onlychat.controllers;
 
 import api.onlychat.entities.Contact;
+import api.onlychat.entities.Message;
+import api.onlychat.services.MessageService;
 import api.onlychat.services.UserAccountService;
 import api.onlychat.entities.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import java.util.Set;
 public class ApiRestController {
     @Autowired
     private UserAccountService userService;
+    @Autowired
+    private MessageService messageService;
 
     @PostMapping("/cadastrar")
     @ResponseStatus(HttpStatus.CREATED)
@@ -72,6 +76,26 @@ public class ApiRestController {
     public Set<UserAccount> findUsers(@PathVariable("id") Long userLogado, @RequestParam("adicionar") String busca) throws Exception{
         try {
             return userService.findUsers(userLogado, busca);
+        }
+        catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    @GetMapping("/{userLogado}/message/{receiver}")
+    public Set<Message> getAllChatMessages(@PathVariable Long userLogado, @PathVariable Long receiver) throws Exception{
+        try {
+            return messageService.gelAllMessages(userLogado, receiver);
+        }
+        catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    @PostMapping("/message")
+    public void sendMessage(@RequestBody Message message) throws Exception{
+        try {
+            messageService.sendMessage(message);
         }
         catch (Exception e){
             throw new Exception(e);
