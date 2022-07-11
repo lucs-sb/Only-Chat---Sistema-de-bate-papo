@@ -19,6 +19,10 @@ public class ApiRestController {
     @Autowired
     private MessageService messageService;
 
+    @GetMapping("/login")
+    public void login(){
+    }
+
     @PostMapping("/cadastrar")
     @ResponseStatus(HttpStatus.CREATED)
     public void addUserAccount(@RequestBody UserAccount user) throws Exception{
