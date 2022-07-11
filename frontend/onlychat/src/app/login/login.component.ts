@@ -1,36 +1,52 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 import { LoginService } from '../login.service';
 import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  username: string = '';
+  private notifier: NotifierService;
+  email: string = '';
   password: string = '';
-  loginFailMessage: string = '';
 
+  /**
+ * Constructor
+ *
+ * @param {NotifierService} notifier Notifier service
+ */
   constructor(private loginService: LoginService,
     private router: Router,
-    private localStorage: StorageService) { }
+    private localStorage: StorageService, notifier: NotifierService) {
+    this.notifier = notifier;
+  }
 
 
   ngOnInit(): void {
   }
 
   login() {
-    console.log('login - ' + this.username + ':' + this.password);
-    this.loginService.login(this.username, this.password).subscribe((user) => {
-      console.log('USER/ME: ');
-      console.log(user);
-      this.localStorage.set('authorization', btoa(this.username + ':' + this.password));
-      this.router.navigate(['/dashboard']);
-    }, (error) => {
-      this.loginFailMessage = 'Usuario ou senha invalidos. Tente novamente';
-    });
+    try {
+      if (!this.password || !this.email)
+        throw new Error('Preencha todos os campos');
+
+      this.loginService.login(this.email, this.password).subscribe((user) => {
+        this.localStorage.set('authorization', btoa(this.email + ':' + this.password));
+        this.router.navigate(['/dashboard']);
+      }, (error) => {
+        throw new Error('Informações inválidas');
+      });
+
+      this.notifier.notify('success', 'Login realizado com sucesso');
+
+    }
+    catch (ex: any) {
+      this.notifier.notify('error', ex);
+    }
   }
 
 }
