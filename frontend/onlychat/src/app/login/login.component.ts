@@ -34,14 +34,12 @@ export class LoginComponent implements OnInit {
       if (!this.password || !this.email)
         throw new Error('Preencha todos os campos');
 
-      this.loginService.login(this.email, this.password).subscribe((user) => {
+      var teste = this.loginService.login(this.email, this.password).subscribe((user) => {
         this.localStorage.set('authorization', btoa(this.email + ':' + this.password));
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/friends']);
       }, (error) => {
-        throw new Error('Informações inválidas');
+        this.notifier.notify('error', 'Informações inválidas');
       });
-
-      this.notifier.notify('success', 'Login realizado com sucesso');
 
     }
     catch (ex: any) {

@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class LoginService {
-  private API_USER_ME: string = 'http://localhost:8082/api/user';
+  private API_USER_ME: string = 'http://localhost:8080/api/user/login';
 
   constructor(private http: HttpClient) { }
 
@@ -16,6 +16,6 @@ export class LoginService {
         authorization: 'Basic ' + btoa(username + ':' + password)
       }
     );
-    return this.http.get<Object>(this.API_USER_ME, { headers: headers });
+    return this.http.get<Object>(this.API_USER_ME, { headers: headers })
   }
 }

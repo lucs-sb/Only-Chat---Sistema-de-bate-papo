@@ -44,7 +44,7 @@ export class RegisterComponent implements OnInit {
 
       this.loginService.register(this.email, this.name, this.gender, this.password,).subscribe((user) => {
         this.localStorage.set('authorization', btoa(this.email + ':' + this.password));
-        this.router.navigate(['/']);
+        this.router.navigate(['/friends']);
       }, () => {
         throw new Error('Não foi possível realizar o cadastro no momento, tente novamente mais tarde');
       });
