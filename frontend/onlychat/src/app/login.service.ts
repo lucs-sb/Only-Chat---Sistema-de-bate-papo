@@ -8,7 +8,7 @@ import { StorageService } from './storage.service';
   providedIn: 'root'
 })
 export class LoginService {
-  private API_USER_ME: string = 'http://localhost:8082/api/user/login';
+  private API_USER_ME: string = 'http://localhost:8080/api/user/login';
 
   constructor(private http: HttpClient, private localStorage: StorageService) { }
 
@@ -25,8 +25,11 @@ export class LoginService {
         this.localStorage.set('userEmail', response.email);
         this.localStorage.set('userName', response.name);
         this.localStorage.set('userGender', response.gender);
-        this.localStorage.set('userPhoto', response.photo);
-
+        if(response.photo == null)
+          this.localStorage.set('userUrl_photo', response.url_photo);
+        else
+          this.localStorage.set('userPhoto', response.photo);
+        
         return response
       })
     );
