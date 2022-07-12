@@ -18,7 +18,9 @@ public class Contact {
     private Long friend;
     private String nome;
     private String email;
-    private String photo;
+    private String url_photo;
+    @Lob
+    private byte[] photo;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime date_time;
 
@@ -65,11 +67,11 @@ public class Contact {
         this.email = email;
     }
 
-    public String getPhoto() {
+    public byte[] getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
 
@@ -95,5 +97,13 @@ public class Contact {
 
     public void setMessages(Set<Message> messages) {
         this.messages = messages;
+    }
+
+    public String getUrl_photo() {
+        return url_photo;
+    }
+
+    public void setUrl_photo(String url_photo) {
+        this.url_photo = url_photo;
     }
 }

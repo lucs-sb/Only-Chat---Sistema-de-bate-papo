@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -38,9 +39,24 @@ public class UserAccountService {
             user.setPassword(passwordEncoder.encode(newUser.getPassword()));
             user.setName(newUser.getName());
             user.setGender(newUser.getGender());
-            user.setPhoto(newUser.getPhoto());
+            user.setUrl_photo(newUser.getUrl_photo());
             userRepository.saveAndFlush(user);
         } catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
+
+    @Transactional
+    public void uploadPhoto(String email, MultipartFile file) throws Exception{
+        try {
+            UserAccount user = userRepository.getUserByEmail(email);
+            if (user == null)
+                throw new UserBadRequestException("Usuário não registrado");
+
+            user.setPhoto(file.getBytes());
+            userRepository.save(user);
+        }
+        catch (Exception e){
             throw new Exception(e);
         }
     }
@@ -94,10 +110,12 @@ public class UserAccountService {
             contact.setEmail(friend.get().getEmail());
             contact.setNome(friend.get().getName());
             contact.setPhoto(friend.get().getPhoto());
+            contact.setUrl_photo(friend.get().getUrl_photo());
             contact.setDate_time(LocalDateTime.now());
             contactRepository.saveAndFlush(contact);
 
             userLogado.get().getContacts().add(contact);
+
         } catch (Exception e) {
             throw new Exception(e);
         }
@@ -145,6 +163,7 @@ public class UserAccountService {
                 throw new ContactNotFoundException("Não há registro de contatos para essa busca");
 
             return contacts;
+
         } catch (Exception e) {
             throw new Exception(e);
         }
@@ -174,6 +193,7 @@ public class UserAccountService {
                 throw new UserNotFoundException("Não existe usuário para ser adicionado");
 
             return users;
+
         } catch (Exception e) {
             throw new Exception(e);
         }
@@ -187,6 +207,7 @@ public class UserAccountService {
                 throw new UserNotFoundException("Usuário não encontrado");
 
             user.setPassword("");
+
             return user;
 
         } catch (Exception e) {

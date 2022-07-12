@@ -8,6 +8,7 @@ import api.onlychat.entities.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
 
@@ -34,6 +35,17 @@ public class ApiRestController {
         try {
             userService.addUserAccount(user);
         } catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
+
+    @PostMapping("/upload/{email}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void uploadPhoto(@PathVariable String email, @RequestParam("file") MultipartFile file) throws Exception{
+        try {
+            userService.uploadPhoto(email, file);
+        }
+        catch (Exception e){
             throw new Exception(e);
         }
     }

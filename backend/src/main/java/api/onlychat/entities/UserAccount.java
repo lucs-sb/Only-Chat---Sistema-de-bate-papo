@@ -19,7 +19,9 @@ public class UserAccount implements UserDetails {
     private String password;
     private String name;
     private String gender;
-    private String photo;
+    private String url_photo;
+    @Lob
+    private byte[] photo;
 
     @OneToMany(cascade = { CascadeType.ALL })
     @JoinTable(
@@ -31,14 +33,14 @@ public class UserAccount implements UserDetails {
 
     public UserAccount (){}
 
-    public UserAccount(Long id, String email, String name, String photo) {
+    public UserAccount(Long id, String email, String name, byte[] photo) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.photo = photo;
     }
 
-    public UserAccount(String email, String name, String gender, String photo) {
+    public UserAccount(String email, String name, String gender, byte[] photo) {
         this.gender = gender;
         this.email = email;
         this.name = name;
@@ -116,11 +118,11 @@ public class UserAccount implements UserDetails {
         this.gender = gender;
     }
 
-    public String getPhoto() {
+    public byte[] getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
 
@@ -130,5 +132,13 @@ public class UserAccount implements UserDetails {
 
     public void setContacts(Set<Contact> contacts) {
         this.contacts = contacts;
+    }
+
+    public String getUrl_photo() {
+        return url_photo;
+    }
+
+    public void setUrl_photo(String url_photo) {
+        this.url_photo = url_photo;
     }
 }
