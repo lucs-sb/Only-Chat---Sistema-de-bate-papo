@@ -1,1 +1,58 @@
-<p>friends works!</p>
+<app-header></app-header>
+
+<notifier-container></notifier-container>
+
+<div class="p-5 pb-0">
+  <div class="row">
+    <div class="col-10">
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Buscar" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button">Pesquisar</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-2">
+      <button class="btn btn-success" type="button">+ Amigos</button>
+    </div>
+  </div>
+</div>
+
+<div class="p-5 pt-0">
+  <div class="row">
+    <div *ngFor="let friend of friends" class="col-4 m-2 card" style="width: 18rem;">
+      <img class="card-img-top" src="https://www.rbsdirect.com.br/imagesrc/24832519.jpg?w=700" alt="Card image cap">
+      <div class="card-body">
+        <input type="hidden" [(ngModel)]="friend.id">
+        <h5 class="card-title text-center">{{friend.nome}}</h5>
+        <div class="d-flex justify-content-around mt-3">
+          <a href="#" class="btn btn-success">Conversar</a>
+          <a href="#" class="btn btn-danger" (click)="setRemoveId($event)" id="{{friend.id}}" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">Remover</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!--modal remove friend-->
+<div class="modal" id="exampleModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Desfazer amizade</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Realmente deseja desfazer essa amizade? Todas as conversas com esse usuário irão ser deletadas.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-danger" (click)="sendRemoveFriend()"
+          data-bs-dismiss="modal">Remover</button>
+      </div>
+    </div>
+  </div>
+</div>
