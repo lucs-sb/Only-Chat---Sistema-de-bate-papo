@@ -20,88 +20,89 @@ public class ApiRestController {
     private MessageService messageService;
 
     @GetMapping("/login")
-    public void login(){
+    public UserAccount login(@RequestParam("email") String email) throws Exception {
+        try {
+            return userService.getUserByEmail(email);
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
     @PostMapping("/cadastrar")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addUserAccount(@RequestBody UserAccount user) throws Exception{
+    public void addUserAccount(@RequestBody UserAccount user) throws Exception {
         try {
             userService.addUserAccount(user);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
     @GetMapping("/{id}/contact")
-    public Set<Contact> getContacts(@PathVariable("id") Long userLogado) throws Exception{
+    public Set<Contact> getContacts(@PathVariable("id") Long userLogado) throws Exception {
         try {
             return userService.getContacts(userLogado);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
     @PostMapping("/{id}/contact")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addContact(@PathVariable("id") Long userLogado, @RequestBody UserAccount newContact) throws Exception{
+    public void addContact(@PathVariable("id") Long userLogado, @RequestBody UserAccount newContact) throws Exception {
         try {
             userService.addContact(userLogado, newContact);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
     @DeleteMapping("/{user}/contact/{contact}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteContact(@PathVariable("user") Long userLogado, @PathVariable("contact") Long contact) throws Exception{
+    public void deleteContact(@PathVariable("user") Long userLogado, @PathVariable("contact") Long contact)
+            throws Exception {
         try {
             userService.deleteContact(userLogado, contact);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
     @RequestMapping("/{id}/busca")
-    public Set<Contact> findContacts(@PathVariable("id") Long userLogado, @RequestParam("busca") String busca) throws Exception{
+    public Set<Contact> findContacts(@PathVariable("id") Long userLogado, @RequestParam("busca") String busca)
+            throws Exception {
         try {
             return userService.findContacts(userLogado, busca);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
     @RequestMapping("/{id}/adicionar")
-    public Set<UserAccount> findUsers(@PathVariable("id") Long userLogado, @RequestParam("adicionar") String busca) throws Exception{
+    public Set<UserAccount> findUsers(@PathVariable("id") Long userLogado, @RequestParam("adicionar") String busca)
+            throws Exception {
         try {
             return userService.findUsers(userLogado, busca);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
     @GetMapping("/{userLogado}/message/{receiver}")
-    public Set<Message> getAllChatMessages(@PathVariable Long userLogado, @PathVariable Long receiver) throws Exception{
+    public Set<Message> getAllChatMessages(@PathVariable Long userLogado, @PathVariable Long receiver)
+            throws Exception {
         try {
             return messageService.gelAllMessages(userLogado, receiver);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
     @PostMapping("/message")
-    public void sendMessage(@RequestBody Message message) throws Exception{
+    public void sendMessage(@RequestBody Message message) throws Exception {
         try {
             messageService.sendMessage(message);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }

@@ -27,7 +27,7 @@ public class UserAccountService {
     private PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void addUserAccount(UserAccount newUser) throws Exception{
+    public void addUserAccount(UserAccount newUser) throws Exception {
         try {
             UserAccount user = userRepository.getUserByEmail(newUser.getEmail());
             if (user != null)
@@ -40,14 +40,13 @@ public class UserAccountService {
             user.setGender(newUser.getGender());
             user.setPhoto(newUser.getPhoto());
             userRepository.saveAndFlush(user);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
     @Transactional(readOnly = true)
-    public Set<Contact> getContacts(Long userLogado) throws Exception{
+    public Set<Contact> getContacts(Long userLogado) throws Exception {
         try {
             Optional<UserAccount> user = userRepository.findById(userLogado);
             if (user.isEmpty())
@@ -56,8 +55,8 @@ public class UserAccountService {
             Set<Contact> contactsWithChats = contactRepository.findByChats(userLogado);
             Set<Contact> contacts = contactRepository.getContacts(userLogado);
 
-            if (!contactsWithChats.isEmpty()){
-                for (Contact contact : contactsWithChats){
+            if (!contactsWithChats.isEmpty()) {
+                for (Contact contact : contactsWithChats) {
                     contacts.removeIf(contact2 -> contact2 != null && contact.getId().equals(contact2.getId()));
                 }
             }
@@ -68,14 +67,13 @@ public class UserAccountService {
                 throw new ContactNotFoundException("Usuário não contém contatos");
 
             return contactsWithChats;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
     @Transactional
-    public void addContact(Long userLogadoId, UserAccount newContact) throws Exception{
+    public void addContact(Long userLogadoId, UserAccount newContact) throws Exception {
         try {
             Optional<UserAccount> userLogado = userRepository.findById(userLogadoId);
             if (userLogado.isEmpty())
@@ -85,7 +83,8 @@ public class UserAccountService {
             if (friend.isEmpty())
                 throw new UserNotFoundException("Usuário não encontrado");
 
-            Contact contact = contactRepository.findContactByPrincipalAndFriendAndEmail(userLogadoId, friend.get().getId(), friend.get().getEmail());
+            Contact contact = contactRepository.findContactByPrincipalAndFriendAndEmail(userLogadoId,
+                    friend.get().getId(), friend.get().getEmail());
             if (contact != null)
                 throw new ContactBadRequestException("Esse contato já existe");
 
@@ -99,14 +98,13 @@ public class UserAccountService {
             contactRepository.saveAndFlush(contact);
 
             userLogado.get().getContacts().add(contact);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
     @Transactional
-    public void deleteContact(Long userLogado, Long contactId) throws Exception{
+    public void deleteContact(Long userLogado, Long contactId) throws Exception {
         try {
             boolean exists = false;
 
@@ -114,7 +112,7 @@ public class UserAccountService {
             if (user.isEmpty())
                 throw new UserNotFoundException("Usuário não encontrado");
 
-            for(Contact contact : user.get().getContacts()){
+            for (Contact contact : user.get().getContacts()) {
                 if (contactId.equals(contact.getId())) {
                     user.get().getContacts().remove(contact);
                     contactRepository.delete(contact);
@@ -124,20 +122,19 @@ public class UserAccountService {
             }
             if (!exists)
                 throw new ContactBadRequestException("O usuário não possui esse contato");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
     @Transactional(readOnly = true)
-    public Set<Contact> findContacts(Long userLogado, String busca) throws Exception{
+    public Set<Contact> findContacts(Long userLogado, String busca) throws Exception {
         try {
             Set<Contact> contacts = contactRepository.findContacts(userLogado, busca);
             Set<Contact> contactsWithChats = contactRepository.findContactsWithChats(userLogado, busca);
 
-            if (!contactsWithChats.isEmpty()){
-                for (Contact contact : contactsWithChats){
+            if (!contactsWithChats.isEmpty()) {
+                for (Contact contact : contactsWithChats) {
                     contacts.removeIf(contact2 -> contact2 != null && contact.getId().equals(contact2.getId()));
                 }
             }
@@ -148,14 +145,13 @@ public class UserAccountService {
                 throw new ContactNotFoundException("Não há registro de contatos para essa busca");
 
             return contacts;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
     @Transactional(readOnly = true)
-    public Set<UserAccount> findUsers(Long userLogado, String busca) throws Exception{
+    public Set<UserAccount> findUsers(Long userLogado, String busca) throws Exception {
         try {
             Optional<UserAccount> logado = userRepository.findById(userLogado);
             if (logado.isEmpty())
@@ -165,9 +161,9 @@ public class UserAccountService {
             if (users.isEmpty())
                 throw new UserNotFoundException("Não há registro de usuários");
 
-            for (UserAccount user : users){
-                for (Contact contact : logado.get().getContacts()){
-                    if (contact != null && contact.getEmail().equals(user.getEmail())){
+            for (UserAccount user : users) {
+                for (Contact contact : logado.get().getContacts()) {
+                    if (contact != null && contact.getEmail().equals(user.getEmail())) {
                         users.remove(user);
                         break;
                     }
@@ -178,8 +174,22 @@ public class UserAccountService {
                 throw new UserNotFoundException("Não existe usuário para ser adicionado");
 
             return users;
+        } catch (Exception e) {
+            throw new Exception(e);
         }
-        catch (Exception e){
+    }
+
+    @Transactional(readOnly = true)
+    public UserAccount getUserByEmail(String email) throws Exception {
+        try {
+            UserAccount user = userRepository.getUserByEmail(email);
+            if (user == null)
+                throw new UserNotFoundException("Usuário não encontrado");
+
+            user.setPassword("");
+            return user;
+
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }
