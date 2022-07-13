@@ -10,8 +10,8 @@ import { Message } from './Message';
   providedIn: 'root'
 })
 export class ChatService {
-  private API_USER_LOGIN: string = `http://localhost:8082/api/user/login`;
-  private API_SEND_MESSAGE: string = `http://localhost:8082/api/user/message`;
+  private API_USER_LOGIN: string = `https://web-only-chat.herokuapp.com/api/user/login`;
+  private API_SEND_MESSAGE: string = `https://web-only-chat.herokuapp.com/api/user/message`;
 
   constructor(private http: HttpClient, private localStorage: StorageService) {
     this.getFriendForCard()

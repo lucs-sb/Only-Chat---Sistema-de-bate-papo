@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 
 export class FileUploadService {
-  private baseUrl = 'http://localhost:8080/api/user';
+  private baseUrl = 'https://web-only-chat.herokuapp.com/api/user';
 
   constructor(private http: HttpClient) { }
 

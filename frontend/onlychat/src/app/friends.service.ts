@@ -11,8 +11,8 @@ import { Friend } from './Friend';
 export class FriendsService {
 
   constructor(private http: HttpClient) { }
-  private API_USER_ME: string = `http://localhost:8082/api/user/${localStorage.getItem("userId")}/contact`;
-  private API_FIND_BY_NAME: string = `http://localhost:8082/api/user/${localStorage.getItem("userId")}/busca`;
+  private API_USER_ME: string = `https://web-only-chat.herokuapp.com/api/user/${localStorage.getItem("userId")}/contact`;
+  private API_FIND_BY_NAME: string = `https://web-only-chat.herokuapp.com/api/user/${localStorage.getItem("userId")}/busca`;
 
   getFriends(): Observable<Friend[]> {
     {
