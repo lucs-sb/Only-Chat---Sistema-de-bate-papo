@@ -6,18 +6,20 @@
   <div class="row">
     <div class="col-10">
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Buscar" aria-describedby="basic-addon2">
+        <input [(ngModel)]="findName" type="text" class="form-control" placeholder="Buscar"
+          aria-describedby="basic-addon2">
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button">Pesquisar</button>
+          <button (click)="findFriends()" class="btn btn-outline-secondary" type="button">Pesquisar</button>
         </div>
       </div>
     </div>
     <div class="col-2">
-      <button class="btn btn-success" type="button">+ Amigos</button>
+      <a href="/addfriend" class="btn btn-success" type="button">+ Amigos</a>
     </div>
   </div>
 </div>
 
+<!--friends list-->
 <div class="p-5 pt-0">
   <div class="row">
     <div *ngFor="let friend of friends" class="col-4 m-2 card" style="width: 18rem;">
@@ -26,15 +28,13 @@
         <input type="hidden" [(ngModel)]="friend.id">
         <h5 class="card-title text-center">{{friend.nome}}</h5>
         <div class="d-flex justify-content-around mt-3">
-          <a href="#" class="btn btn-success">Conversar</a>
+          <a href="/friends/{{friend.friend}}/chat" class="btn btn-success">Conversar</a>
           <a href="#" class="btn btn-danger" (click)="setRemoveId($event)" id="{{friend.id}}" data-bs-toggle="modal"
             data-bs-target="#exampleModal">Remover</a>
         </div>
       </div>
     </div>
-
   </div>
-
 </div>
 
 <!--modal remove friend-->

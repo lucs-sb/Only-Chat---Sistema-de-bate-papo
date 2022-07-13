@@ -12,6 +12,7 @@ export class FriendsComponent implements OnInit {
   private notifier: NotifierService;
   removeFriendId = 0;
   friends: Friend[] = [];
+  findName: string = '';
 
   /**
    * Constructor
@@ -34,7 +35,6 @@ export class FriendsComponent implements OnInit {
   setRemoveId(event: { target: any; srcElement: any; currentTarget: any; }) {
     var target = event.target || event.srcElement || event.currentTarget;
     this.removeFriendId = target.attributes.id.value;
-    console.log(this.removeFriendId)
   }
 
   sendRemoveFriend() {
@@ -43,6 +43,11 @@ export class FriendsComponent implements OnInit {
 
       this.friends = this.friends.filter(item => item.id != this.removeFriendId);
     })
+  }
+
+  findFriends() {
+    this.friends = [];
+    this.friendsService.findFriends(this.findName).subscribe((friends) => (this.friends = friends));
   }
 
 }

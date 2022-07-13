@@ -1,0 +1,40 @@
+<app-header></app-header>
+
+<notifier-container></notifier-container>
+
+
+<div class="p-5 pb-0">
+  <div class="bd-callout-danger">
+    <h4 class="p-3" style="color:#3361F2">Procure por novas pessoas e faça novas amizades!</h4>
+  </div>
+  <div class="input-group mb-3">
+    <input [(ngModel)]="findName" type="text" class="form-control" placeholder="Buscar pessoas por nome"
+      aria-describedby="basic-addon2">
+    <div class="input-group-append">
+      <button (click)="findNewFriends()" class=" btn btn-success" type="button">Pesquisar</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="friends.length; else templateName">
+  <!--friends list-->
+  <div class="p-5 pt-0">
+    <div class="row">
+      <div *ngFor="let friend of friends" class="col-4 m-2 card" style="width: 18rem;">
+        <img class="card-img-top" src="https://www.rbsdirect.com.br/imagesrc/24832519.jpg?w=700" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title text-center">{{friend.name}}</h5>
+          <div class="d-flex justify-content-around mt-3">
+            <button id="{{friend.id}}" (click)="addfriend($event)" class="btn btn-success">Adicionar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #templateName>
+  <div class="p-5">
+    <h5 class="text-center">Sem resultados para serem exibidos</h5>
+  </div>
+</ng-template>

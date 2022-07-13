@@ -12,6 +12,7 @@ export class FriendsService {
 
   constructor(private http: HttpClient) { }
   private API_USER_ME: string = `http://localhost:8082/api/user/${localStorage.getItem("userId")}/contact`;
+  private API_FIND_BY_NAME: string = `http://localhost:8082/api/user/${localStorage.getItem("userId")}/busca`;
 
   getFriends(): Observable<Friend[]> {
     {
@@ -30,5 +31,16 @@ export class FriendsService {
 
     return this.http.delete<Object>(this.API_USER_ME + '/' + id, httpOptions)
 
+  }
+
+  findFriends(findString: any): Observable<Friend[]> {
+    {
+      const httpOptions = {
+        headers: { authorization: 'Basic ' + localStorage.getItem("authorization") },
+        params: { 'busca': findString }
+      };
+
+      return this.http.get<Friend[]>(this.API_FIND_BY_NAME, httpOptions)
+    }
   }
 }

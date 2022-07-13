@@ -11,6 +11,8 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { FriendsComponent } from './friends/friends.component';
 import { HeaderComponent } from './header/header.component';
+import { AddfriendComponent } from './addfriend/addfriend.component';
+import { ChatComponent } from './chat/chat.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -59,7 +61,9 @@ const customNotifierOptions: NotifierOptions = {
     LoginComponent,
     RegisterComponent,
     FriendsComponent,
-    HeaderComponent
+    HeaderComponent,
+    AddfriendComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
