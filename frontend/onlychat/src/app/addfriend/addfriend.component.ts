@@ -34,7 +34,7 @@ export class AddfriendComponent implements OnInit {
     var target = event.target || event.srcElement || event.currentTarget;
     var addFriendId = target.attributes.id.value;
 
-    this.addfriendService.addfriend(this.findName).subscribe(res => {
+    this.addfriendService.addfriend(addFriendId).subscribe(res => {
       this.friends = this.friends.filter(item => item.id != addFriendId);
       this.notifier.notify('success', 'Amigo adicionado com sucesso');
     })

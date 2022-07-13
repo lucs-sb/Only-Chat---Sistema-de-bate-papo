@@ -9,7 +9,9 @@
       <div class="card" style="width: 18rem;">
         <img class="card-img-top" src="https://www.rbsdirect.com.br/imagesrc/24832519.jpg?w=700" alt="Card image cap">
         <div class="card-body">
-          <h5 class="card-title text-center">Maria Bonita</h5>
+          <h5 class="card-title text-center">{{userChatName}}</h5>
+          <p class="card-title text-center">Email: {{userChatEmail}}</p>
+          <p class="card-title text-center"> Gênero: {{userChatGender}}</p>
           <div class="d-flex justify-content-around mt-3">
           </div>
         </div>
@@ -18,39 +20,26 @@
     </div>
     <div class="col-9">
       <div class="row p-3">
-        <div class="border border-primary" style="height:30rem">
-          <div class="row p-1">
-            <div class="col-6 mb-1">
-              <div class="message bg-primary rounded-3 text-light ps-2">Alo jkdfhkjf</div>
-            </div>
-            <div class="col-6 mb-1">
-            </div>
-            <div class="col-6 mb-1">
-            </div>
-            <div class="col-6 mb-1">
-              <div class="message bg-primary rounded-3 text-light ps-2">Alo!Lo bkjhcvheiuowhuihiuo</div>
+        <div class="border border-primary overflow-auto" style="height:30rem">
+          <div *ngFor="let message of messages.reverse()" class="row p-1">
+
+            <div *ngIf="message.sender != userId; else templateName">
+              <div class="col-6 mb-1">
+                <div class="message bg-primary rounded-3 text-light ps-2">{{message.message}}</div>
+              </div>
+
+              <div class="col-6 mb-1">
+              </div>
             </div>
 
-            <div class="col-6 mb-1">
-              <div class="message bg-primary rounded-3 text-light ps-2">Alo jkdfhkjf</div>
-            </div>
-            <div class="col-6 mb-1">
-            </div>
-            <div class="col-6 mb-1">
-            </div>
-            <div class="col-6 mb-1">
-              <div class="message bg-primary rounded-3 text-light ps-2">Alo!Lo bkjhcvheiuowhuihiuo</div>
-            </div>
-            <div class="col-6 mb-1">
-              <div class="message bg-primary rounded-3 text-light ps-2">Alo jkdfhkjf</div>
-            </div>
-            <div class="col-6 mb-1">
-            </div>
-            <div class="col-6 mb-1">
-            </div>
-            <div class="col-6 mb-1">
-              <div class="message bg-primary rounded-3 text-light ps-2">Alo!Lo bkjhcvheiuowhuihiuo</div>
-            </div>
+            <ng-template #templateName>
+              <div class="col-6 mb-1">
+              </div>
+
+              <div class="col-6 mb-1">
+                <div class="message bg-primary rounded-3 text-light ps-2">{{message.message}}</div>
+              </div>
+            </ng-template>
 
           </div>
 
@@ -59,11 +48,12 @@
       <div class="row">
         <div class="col-10">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Mensagem" aria-describedby="basic-addon2">
+            <input [(ngModel)]="messageContent" type="text" class="form-control" placeholder="Mensagem"
+              aria-describedby="basic-addon2">
           </div>
         </div>
         <div class="col-2">
-          <a href="/addfriend" class="btn btn-success" type="button">Enviar</a>
+          <button (click)="sendMessage()" class="btn btn-success" type="button">Enviar</button>
         </div>
       </div>
     </div>

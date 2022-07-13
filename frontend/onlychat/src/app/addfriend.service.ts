@@ -26,12 +26,6 @@ export class AddfriendService {
 
   addfriend(id: any): Observable<any> {
     {
-      console.log(id)
-      const httpOptions = {
-        headers: { authorization: 'Basic ' + localStorage.getItem("authorization") },
-        body: { 'id': id }
-      };
-
       return this.http.post<any>(this.API_ADD_USER, { 'id': id })
     }
   }

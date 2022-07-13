@@ -34,4 +34,8 @@ export class LoginService {
       })
     );
   }
+
+  logout() {
+    this.localStorage.clear()
+  }
 }

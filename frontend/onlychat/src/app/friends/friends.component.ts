@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FriendsService } from '../friends.service';
 import { Friend } from 'src/app/Friend';
 import { NotifierService } from 'angular-notifier';
+import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-friends',
@@ -19,7 +20,7 @@ export class FriendsComponent implements OnInit {
    *
    * @param {NotifierService} notifier Notifier service
    */
-  constructor(private friendsService: FriendsService, notifier: NotifierService) {
+  constructor(private friendsService: FriendsService, notifier: NotifierService, private localStorage: StorageService) {
     this.notifier = notifier;
     this.getFriends();
   }
@@ -35,6 +36,12 @@ export class FriendsComponent implements OnInit {
   setRemoveId(event: { target: any; srcElement: any; currentTarget: any; }) {
     var target = event.target || event.srcElement || event.currentTarget;
     this.removeFriendId = target.attributes.id.value;
+  }
+
+  setEmailToChat(event: { target: any; srcElement: any; currentTarget: any; }) {
+    var target = event.target || event.srcElement || event.currentTarget;
+    console.log(target.attributes.id.value.toString())
+    this.localStorage.set('EmailToChat', target.attributes.id.value.toString());
   }
 
   sendRemoveFriend() {
