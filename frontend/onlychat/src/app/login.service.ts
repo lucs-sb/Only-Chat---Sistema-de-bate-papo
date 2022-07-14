@@ -25,10 +25,7 @@ export class LoginService {
         this.localStorage.set('userEmail', response.email);
         this.localStorage.set('userName', response.name);
         this.localStorage.set('userGender', response.gender);
-        if (response.photo == null)
-          this.localStorage.set('userUrl_photo', response.url_photo);
-        else
-          this.localStorage.set('userPhoto', response.photo);
+        this.localStorage.set('userUrl_photo', response.url_photo);
 
         return response
       })

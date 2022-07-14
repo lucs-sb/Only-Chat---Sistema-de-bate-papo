@@ -40,7 +40,6 @@ export class FriendsComponent implements OnInit {
 
   setEmailToChat(event: { target: any; srcElement: any; currentTarget: any; }) {
     var target = event.target || event.srcElement || event.currentTarget;
-    console.log(target.attributes.id.value.toString())
     this.localStorage.set('EmailToChat', target.attributes.id.value.toString());
   }
 

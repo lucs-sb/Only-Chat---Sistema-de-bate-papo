@@ -4,6 +4,6 @@ export interface Friend {
   nome: String;
   name: String;
   email: String;
-  photo: String;
+  url_photo: String;
   gender: String;
 }

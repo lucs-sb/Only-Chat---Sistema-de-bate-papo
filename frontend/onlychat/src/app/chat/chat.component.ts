@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChatService } from '../chat.service';
 import { Friend } from '../Friend';
 import { Message } from '../Message';
+import { MessagePage } from '../messagePage';
 
 @Component({
   selector: 'app-chat',
@@ -14,11 +15,16 @@ export class ChatComponent implements OnInit {
   userChatName: string = localStorage.getItem("ChatUserName")!
   userChatEmail: string = localStorage.getItem("ChatUserEmail")!
   userChatGender: string = localStorage.getItem("ChatUserGender")!
+  photo: string = localStorage.getItem("ChatUserPhoto")!
   messageContent: string = ''
   messages: Message[] = [];
-
-
-
+  messagePage: MessagePage | undefined;
+  pageNumber: number = 0;
+  size: number = 12;
+  @ViewChild('scrollMe')
+  
+  private myScrollContainer!: ElementRef;
+  disableScrollDown = false
 
   constructor(private chatService: ChatService, private route: ActivatedRoute) {
 
@@ -27,15 +33,35 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
     this.getFriendForCard()
     this.getMessages()
-
     setInterval(() => {
-      this.getMessages()
+     this.getMessages()
     }, 2000);
   }
+  ngAfterViewChecked() {
+    this.pageNumber++;
+    this.scrollToBottom();
+}
 
+ onScroll() {
+    let element = this.myScrollContainer.nativeElement
+    let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight
+    if (this.disableScrollDown && atBottom) {
+        this.disableScrollDown = false
+    } else {
+        this.disableScrollDown = true
+    }
+}
+
+
+scrollToBottom(): void {
+    if (this.disableScrollDown) {
+        return
+    }
+    try {
+        this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch(err) { }
+}
   getFriendForCard(): void {
-    //this.route.snapshot.paramMap.get('id');
-
     this.chatService.getFriendForCard().subscribe();
   }
 
@@ -46,7 +72,6 @@ export class ChatComponent implements OnInit {
   }
 
   getMessages(): void {
-    this.chatService.getMessages().subscribe((messages) => (this.messages = messages));
+    this.chatService.getMessages(this.pageNumber).subscribe((messages) => (this.messages = messages.content));
   }
-
 }

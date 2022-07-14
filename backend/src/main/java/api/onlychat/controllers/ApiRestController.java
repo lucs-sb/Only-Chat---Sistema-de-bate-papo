@@ -6,6 +6,8 @@ import api.onlychat.services.MessageService;
 import api.onlychat.services.UserAccountService;
 import api.onlychat.entities.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -101,10 +103,10 @@ public class ApiRestController {
     }
 
     @GetMapping("/{userLogado}/message/{receiver}")
-    public Set<Message> getAllChatMessages(@PathVariable Long userLogado, @PathVariable Long receiver)
+    public Page<Message> getAllChatMessages(Pageable pageable, @PathVariable Long userLogado, @PathVariable Long receiver)
             throws Exception {
         try {
-            return messageService.gelAllMessages(userLogado, receiver);
+            return messageService.gelAllMessages(pageable, userLogado, receiver);
         } catch (Exception e) {
             throw new Exception(e);
         }

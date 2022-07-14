@@ -7,11 +7,12 @@ import api.onlychat.exceptionHandler.message.MessageNotFoundException;
 import api.onlychat.repositories.ContactRepository;
 import api.onlychat.repositories.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Service
 public class MessageService {
@@ -21,13 +22,9 @@ public class MessageService {
     private ContactRepository contactRepository;
 
     @Transactional(readOnly = true)
-    public Set<Message> gelAllMessages(Long userLogado, Long receiver) throws Exception{
+    public Page<Message> gelAllMessages(Pageable pageable, Long userLogado, Long receiver) throws Exception{
         try {
-            Set<Message> messages = messageRepository.getAllChatMessages(userLogado, receiver);
-            if (messages.isEmpty())
-                throw new MessageNotFoundException("Conversa vazia");
-
-            return messages;
+            return messageRepository.getAllChatMessages(pageable, userLogado, receiver);
         }
         catch (Exception e){
             throw new Exception(e);

@@ -5,13 +5,14 @@ import { Friend } from './Friend';
 import { tap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
 import { Message } from './Message';
+import { MessagePage } from './messagePage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  private API_USER_LOGIN: string = `https://web-only-chat.herokuapp.com/api/user/login`;
-  private API_SEND_MESSAGE: string = `https://web-only-chat.herokuapp.com/api/user/message`;
+  private API_USER_LOGIN: string = 'https://web-only-chat.herokuapp.com/api/user/login';
+  private API_SEND_MESSAGE: string = 'https://web-only-chat.herokuapp.com/api/user/message';
 
   constructor(private http: HttpClient, private localStorage: StorageService) {
     this.getFriendForCard()
@@ -30,7 +31,7 @@ export class ChatService {
           this.localStorage.set('ChatUserEmail', response.email);
           this.localStorage.set('ChatUserName', response.name);
           this.localStorage.set('ChatUserGender', response.gender);
-
+          this.localStorage.set('ChatUserPhoto', response.url_photo);
           return response
         })
       )
@@ -41,8 +42,8 @@ export class ChatService {
     {
       var body = {
         'sender': localStorage.getItem("userId"),
-        "receiver": localStorage.getItem("ChatUserId"),
-        "message": content
+        'receiver': localStorage.getItem("ChatUserId"),
+        'message': content
       }
 
       return this.http.post<any>(this.API_SEND_MESSAGE, body).pipe(
@@ -53,10 +54,10 @@ export class ChatService {
     }
   }
 
-  getMessages(): Observable<Message[]> {
+  getMessages(pageNumber: number): Observable<MessagePage> {
     {
-      var url = `http://localhost:8082/api/user/${localStorage.getItem("userId")}/message/${localStorage.getItem("ChatUserId")}`
-      return this.http.get<Message[]>(url)
+      var url = `https://web-only-chat.herokuapp.com/api/user/${localStorage.getItem("userId")}/message/${localStorage.getItem("ChatUserId")}?size=10&page=${pageNumber}`
+      return this.http.get<MessagePage>(url)
     }
   }
 }

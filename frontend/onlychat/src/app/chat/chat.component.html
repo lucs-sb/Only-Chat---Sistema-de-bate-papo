@@ -7,7 +7,7 @@
     <div class="col-3 p-3">
       <!--card-->
       <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="https://www.rbsdirect.com.br/imagesrc/24832519.jpg?w=700" alt="Card image cap">
+        <img class="card-img-top" src="{{photo}}" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title text-center">{{userChatName}}</h5>
           <p class="card-title text-center">Email: {{userChatEmail}}</p>
@@ -19,11 +19,11 @@
 
     </div>
     <div class="col-9">
-      <div class="row p-3">
+      <div class="row p-3" >
         <div class="border border-primary overflow-auto" style="height:30rem">
-          <div *ngFor="let message of messages.reverse()" class="row p-1">
+          <div #scrollMe *ngFor="let message of messages" (scroll)="onScroll()" class="row p-1">
 
-            <div *ngIf="message.sender != userId; else templateName">
+            <div *ngIf="message.sender != userId; else templateName" >
               <div class="col-6 mb-1">
                 <div class="message bg-primary rounded-3 text-light ps-2">{{message.message}}</div>
               </div>

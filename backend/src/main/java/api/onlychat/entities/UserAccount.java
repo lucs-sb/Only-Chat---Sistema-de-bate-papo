@@ -19,6 +19,7 @@ public class UserAccount implements UserDetails {
     private String password;
     private String name;
     private String gender;
+    @Column(length = 2000)
     private String url_photo;
     @Lob
     private byte[] photo;

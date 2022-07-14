@@ -18,6 +18,7 @@ public class Contact {
     private Long friend;
     private String nome;
     private String email;
+    @Column(length = 2000)
     private String url_photo;
     @Lob
     private byte[] photo;

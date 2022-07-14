@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
-
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpBasicAuthInterceptor } from './http-basic-auth.interceptor';
@@ -13,6 +13,7 @@ import { FriendsComponent } from './friends/friends.component';
 import { HeaderComponent } from './header/header.component';
 import { AddfriendComponent } from './addfriend/addfriend.component';
 import { ChatComponent } from './chat/chat.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -70,7 +71,9 @@ const customNotifierOptions: NotifierOptions = {
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    NotifierModule.withConfig(customNotifierOptions)
+    NotifierModule.withConfig(customNotifierOptions),
+    NgxPaginationModule,
+    InfiniteScrollModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpBasicAuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
