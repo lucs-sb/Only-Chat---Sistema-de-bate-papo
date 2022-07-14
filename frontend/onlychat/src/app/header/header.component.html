@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand font-weight-bold" href="/friends" style="color:#3361F2">Only Chat</a>
+    <a class="navbar-brand font-weight-bold" routerLink="/friends" style="color:#3361F2">Only Chat</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
       aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -11,12 +11,12 @@
       </ul>
     </div>
     <div class="nav-item">
-      <a class="nav-link" href="/friends">
+      <a class="nav-link" routerLink="/friends">
         <h5 style="color:aliceblue">{{username}}</h5>
       </a>
     </div>
     <div class="nav-item">
-      <a class="nav-link" href="/">
+      <a class="nav-link" routerLink="/">
         <h5 (click)="logout()" style="color:red">SAIR</h5>
       </a>
     </div>
