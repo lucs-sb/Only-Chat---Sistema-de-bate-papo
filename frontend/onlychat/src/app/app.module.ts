@@ -13,7 +13,6 @@ import { FriendsComponent } from './friends/friends.component';
 import { HeaderComponent } from './header/header.component';
 import { AddfriendComponent } from './addfriend/addfriend.component';
 import { ChatComponent } from './chat/chat.component';
-import { NgxPaginationModule } from 'ngx-pagination';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -72,7 +71,6 @@ const customNotifierOptions: NotifierOptions = {
     AppRoutingModule,
     HttpClientModule,
     NotifierModule.withConfig(customNotifierOptions),
-    NgxPaginationModule,
     InfiniteScrollModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpBasicAuthInterceptor, multi: true }],
