@@ -8,7 +8,6 @@ import { StorageService } from './storage.service';
   providedIn: 'root'
 })
 export class LoginService {
-  private API_USER_ME: string = 'https://web-only-chat.herokuapp.com/api/user/login';
 
   constructor(private http: HttpClient, private localStorage: StorageService) { }
 
@@ -18,7 +17,7 @@ export class LoginService {
       headers: { authorization: 'Basic ' + btoa(username + ':' + password) }
     };
 
-    return this.http.get<any>(this.API_USER_ME+`/${username}`, httpOptions).pipe(
+    return this.http.get<any>(`https://web-only-chat.herokuapp.com/api/user/login/${username}`, httpOptions).pipe(
       tap(response => {
         this.localStorage.set('userId', response.id);
         this.localStorage.set('userEmail', response.email);
