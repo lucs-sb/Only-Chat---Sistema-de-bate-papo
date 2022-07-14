@@ -19,7 +19,7 @@ export class LoginService {
       params: { 'email': username }
     };
 
-    return this.http.get<any>(this.API_USER_ME, httpOptions).pipe(
+    return this.http.get<any>(this.API_USER_ME+`/${username}`, httpOptions).pipe(
       tap(response => {
         this.localStorage.set('userId', response.id);
         this.localStorage.set('userEmail', response.email);
