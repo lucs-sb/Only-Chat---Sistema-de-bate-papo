@@ -15,11 +15,9 @@ export class HttpBasicAuthInterceptor implements HttpInterceptor {
   constructor(private storage: StorageService, private router: Router) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    console.log('HttpBasicAuthInterceptor - Test');
     const credentials = this.storage.get('authorization');
 
     if (credentials) {
-      console.log('HttpBasicAuthInterceptor - credentials: ' + credentials);
       return next.handle(request.clone({ setHeaders: { Authorization: 'Basic ' + credentials } }))
         .pipe(
           catchError((response: HttpErrorResponse) => {
