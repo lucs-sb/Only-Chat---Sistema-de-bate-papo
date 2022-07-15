@@ -13,7 +13,7 @@ import { MessagePage } from './messagePage';
 export class ChatService {
   private API_USER_LOGIN: string = 'https://web-only-chat.herokuapp.com/api/user/login/';
   private API_SEND_MESSAGE: string = 'https://web-only-chat.herokuapp.com/api/user/message';
-  email: string = localStorage.getItem("EmailToChat")!
+  
   constructor(private http: HttpClient, private localStorage: StorageService) {
     this.getFriendForCard()
   }
@@ -24,7 +24,7 @@ export class ChatService {
         headers: { authorization: 'Basic ' + localStorage.getItem("authorization") }
       };
 
-      return this.http.get<any>(this.API_USER_LOGIN+`${this.email}`, httpOptions).pipe(
+      return this.http.get<any>(this.API_USER_LOGIN+`${localStorage.getItem("EmailToChat")!}`, httpOptions).pipe(
         tap(response => {
           this.localStorage.set('ChatUserId', response.id);
           this.localStorage.set('ChatUserEmail', response.email);
