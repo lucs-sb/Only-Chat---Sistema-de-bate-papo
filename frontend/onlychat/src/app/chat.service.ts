@@ -24,7 +24,7 @@ export class ChatService {
         headers: { authorization: 'Basic ' + localStorage.getItem("authorization") }
       };
 
-      return this.http.get<any>(this.API_USER_LOGIN+`${email}`, httpOptions).pipe(
+      return this.http.get<any>(this.API_USER_LOGIN+`${this.email}`, httpOptions).pipe(
         tap(response => {
           this.localStorage.set('ChatUserId', response.id);
           this.localStorage.set('ChatUserEmail', response.email);
