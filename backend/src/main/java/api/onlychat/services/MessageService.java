@@ -34,7 +34,7 @@ public class MessageService {
     @Transactional
     public void sendMessage(Message newMessage) throws Exception{
         try {
-            Contact contact = contactRepository.findContactByPrincipalAndFriend(newMessage.getSender(), newMessage.getReceiver());
+            Contact contact = contactRepository.findContactByPrincipalAndFriend(newMessage.getSender().getId(), newMessage.getReceiver().getId());
             if (contact == null)
                 throw new ContactNotFoundException("Contato não encontrado");
 

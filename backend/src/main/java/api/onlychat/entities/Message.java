@@ -12,8 +12,12 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long sender;
-    private Long receiver;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "sender")
+    private UserAccount sender;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "receiver")
+    private UserAccount receiver;
     private String message;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime date_time;
@@ -21,7 +25,7 @@ public class Message {
     public Message() {
     }
 
-    public Message(Long id, Long sender, Long receiver, String message, LocalDateTime date_time) {
+    public Message(Long id, UserAccount sender, UserAccount receiver, String message, LocalDateTime date_time) {
         this.id = id;
         this.sender = sender;
         this.receiver = receiver;
@@ -37,19 +41,19 @@ public class Message {
         this.id = id;
     }
 
-    public Long getSender() {
+    public UserAccount getSender() {
         return sender;
     }
 
-    public void setSender(Long sender) {
+    public void setSender(UserAccount sender) {
         this.sender = sender;
     }
 
-    public Long getReceiver() {
+    public UserAccount getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(Long receiver) {
+    public void setReceiver(UserAccount receiver) {
         this.receiver = receiver;
     }
 

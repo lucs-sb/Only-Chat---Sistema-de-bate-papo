@@ -8,7 +8,7 @@ import { StorageService } from './storage.service';
   providedIn: 'root'
 })
 export class LoginService {
-  private API_USER_ME: string = 'https://web-only-chat.herokuapp.com/api/user/login';
+  private API_USER_ME: string = 'http://localhost:8080/api/user/login';
 
   constructor(private http: HttpClient, private localStorage: StorageService) { }
 

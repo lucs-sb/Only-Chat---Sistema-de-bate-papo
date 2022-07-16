@@ -10,8 +10,8 @@ export class AddfriendService {
 
   constructor(private http: HttpClient) { }
 
-  private API_USER_ME: string = `https://web-only-chat.herokuapp.com/api/user/${localStorage.getItem("userId")}/adicionar`;
-  private API_ADD_USER: string = `https://web-only-chat.herokuapp.com/api/user/${localStorage.getItem("userId")}/contact`;
+  private API_USER_ME: string = `http://localhost:8080/api/user/${localStorage.getItem("userId")}/adicionar`;
+  private API_ADD_USER: string = `http://localhost:8080/api/user/${localStorage.getItem("userId")}/contact`;
 
   findNewsFriend(findString: any): Observable<Friend[]> {
     {

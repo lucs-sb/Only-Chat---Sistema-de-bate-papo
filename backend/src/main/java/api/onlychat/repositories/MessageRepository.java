@@ -16,8 +16,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
             "INNER JOIN contact_message AS cm ON cm.message_id = m.id " +
             "WHERE (m.sender = :paramSender AND m.receiver = :paramReceiver) " +
             "OR (m.sender = :paramReceiver AND m.receiver = :paramSender) " +
-            "ORDER BY m.date_time ASC",
-            //countQuery = "SELECT count(*) FROM message",
-            nativeQuery = true)
+            "ORDER BY m.date_time ASC", nativeQuery = true)
     Page<Message> getAllChatMessages(Pageable pageable, Long paramSender, Long paramReceiver);
 }

@@ -15,15 +15,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api")
 public class ApiRestController {
     @Autowired
     private UserAccountService userService;
     @Autowired
     private MessageService messageService;
 
-    @GetMapping("/login")
-    public UserAccount login(@RequestParam("email") String email) throws Exception {
+    @GetMapping("/login/{email}")
+    public UserAccount login(@PathVariable("email") String email) throws Exception {
         try {
             return userService.getUserByEmail(email);
         } catch (Exception e) {
@@ -41,19 +41,19 @@ public class ApiRestController {
         }
     }
 
-    @PostMapping("/upload/{email}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void uploadPhoto(@PathVariable String email, @RequestParam("file") MultipartFile file) throws Exception{
-        try {
-            userService.uploadPhoto(email, file);
-        }
-        catch (Exception e){
-            throw new Exception(e);
-        }
-    }
+//    @PostMapping("/upload/{email}")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public void uploadPhoto(@PathVariable String email, @RequestParam("file") MultipartFile file) throws Exception{
+//        try {
+//            userService.uploadPhoto(email, file);
+//        }
+//        catch (Exception e){
+//            throw new Exception(e);
+//        }
+//    }
 
-    @GetMapping("/{id}/contact")
-    public Set<Contact> getContacts(@PathVariable("id") Long userLogado) throws Exception {
+    @GetMapping("/{logadoId}/contacts")
+    public Set<UserAccount> getContacts(@PathVariable("logadoId") Long userLogado) throws Exception {
         try {
             return userService.getContacts(userLogado);
         } catch (Exception e) {
@@ -61,9 +61,9 @@ public class ApiRestController {
         }
     }
 
-    @PostMapping("/{id}/contact")
+    @PostMapping("/{logadoId}/contact")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addContact(@PathVariable("id") Long userLogado, @RequestBody UserAccount newContact) throws Exception {
+    public void addContact(@PathVariable("logadoId") Long userLogado, @RequestBody UserAccount newContact) throws Exception {
         try {
             userService.addContact(userLogado, newContact);
         } catch (Exception e) {
@@ -71,19 +71,19 @@ public class ApiRestController {
         }
     }
 
-    @DeleteMapping("/{user}/contact/{contact}")
+    @DeleteMapping("/{logadoId}/contact/{friendId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteContact(@PathVariable("user") Long userLogado, @PathVariable("contact") Long contact)
+    public void deleteContact(@PathVariable("logadoId") Long userLogado, @PathVariable("friendId") Long friendId)
             throws Exception {
         try {
-            userService.deleteContact(userLogado, contact);
+            userService.deleteContact(userLogado, friendId);
         } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
-    @RequestMapping("/{id}/busca")
-    public Set<Contact> findContacts(@PathVariable("id") Long userLogado, @RequestParam("busca") String busca)
+    @RequestMapping(value = "/{logadoId}/busca", params = "busca")
+    public Set<UserAccount> findContacts(@PathVariable("logadoId") Long userLogado, @RequestParam(required = false) String busca)
             throws Exception {
         try {
             return userService.findContacts(userLogado, busca);
@@ -92,11 +92,21 @@ public class ApiRestController {
         }
     }
 
-    @RequestMapping("/{id}/adicionar")
-    public Set<UserAccount> findUsers(@PathVariable("id") Long userLogado, @RequestParam("adicionar") String busca)
+    @RequestMapping(value = "/{logadoId}", params = "adicionar")
+    public Set<UserAccount> findNoFriends(@PathVariable("logadoId") Long userLogado, @RequestParam(required = false) String busca)
             throws Exception {
         try {
             return userService.findUsers(userLogado, busca);
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
+
+    @GetMapping("/{logadoId}/adicionar")
+    public Set<UserAccount> findNoContacts(@PathVariable("logadoId") Long userLogado)
+            throws Exception {
+        try {
+            return userService.findNoContacts(userLogado);
         } catch (Exception e) {
             throw new Exception(e);
         }
@@ -120,4 +130,9 @@ public class ApiRestController {
             throw new Exception(e);
         }
     }
+//
+//    @DeleteMapping("/{id}")
+//    public void deleteUser(@PathVariable Long id){
+//        userService.deleteUser(id);
+//    }
 }

@@ -1,5 +1,6 @@
 package api.onlychat.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,11 +20,12 @@ public class UserAccount implements UserDetails {
     private String password;
     private String name;
     private String gender;
-    @Column(length = 2000)
+    @Column(length = 10000)
     private String url_photo;
-    @Lob
-    private byte[] photo;
+//    @Lob
+//    private byte[] photo;
 
+    @JsonIgnore
     @OneToMany(cascade = { CascadeType.ALL })
     @JoinTable(
             name = "user_contact",
@@ -34,18 +36,13 @@ public class UserAccount implements UserDetails {
 
     public UserAccount (){}
 
-    public UserAccount(Long id, String email, String name, byte[] photo) {
+    public UserAccount(Long id, String email, String password, String name, String gender, String url_photo) {
         this.id = id;
         this.email = email;
+        this.password = password;
         this.name = name;
-        this.photo = photo;
-    }
-
-    public UserAccount(String email, String name, String gender, byte[] photo) {
         this.gender = gender;
-        this.email = email;
-        this.name = name;
-        this.photo = photo;
+        this.url_photo = url_photo;
     }
 
     @Override
@@ -119,13 +116,13 @@ public class UserAccount implements UserDetails {
         this.gender = gender;
     }
 
-    public byte[] getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
-    }
+//    public byte[] getPhoto() {
+//        return photo;
+//    }
+//
+//    public void setPhoto(byte[] photo) {
+//        this.photo = photo;
+//    }
 
     public Set<Contact> getContacts() {
         return contacts;
