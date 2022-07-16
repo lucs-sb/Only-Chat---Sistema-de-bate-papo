@@ -31,7 +31,7 @@ public class ApiRestController {
         }
     }
 
-    @PostMapping("/cadastrar")
+    @PostMapping("/user")
     @ResponseStatus(HttpStatus.CREATED)
     public void addUserAccount(@RequestBody UserAccount user) throws Exception {
         try {
@@ -52,7 +52,7 @@ public class ApiRestController {
 //        }
 //    }
 
-    @GetMapping("/{logadoId}/contacts")
+    @GetMapping("/{logadoId}/contact")
     public Set<UserAccount> getContacts(@PathVariable("logadoId") Long userLogado) throws Exception {
         try {
             return userService.getContacts(userLogado);
@@ -61,7 +61,7 @@ public class ApiRestController {
         }
     }
 
-    @PostMapping("/{logadoId}/contact")
+    @PostMapping("/{logadoId}/newcontact")
     @ResponseStatus(HttpStatus.CREATED)
     public void addContact(@PathVariable("logadoId") Long userLogado, @RequestBody UserAccount newContact) throws Exception {
         try {
@@ -82,8 +82,8 @@ public class ApiRestController {
         }
     }
 
-    @RequestMapping(value = "/{logadoId}/busca", params = "busca")
-    public Set<UserAccount> findContacts(@PathVariable("logadoId") Long userLogado, @RequestParam(required = false) String busca)
+    @RequestMapping(value = "/{logadoId}/busca")
+    public Set<UserAccount> findContacts(@PathVariable("logadoId") Long userLogado, @RequestParam("busca") String busca)
             throws Exception {
         try {
             return userService.findContacts(userLogado, busca);
@@ -92,8 +92,8 @@ public class ApiRestController {
         }
     }
 
-    @RequestMapping(value = "/{logadoId}", params = "adicionar")
-    public Set<UserAccount> findNoFriends(@PathVariable("logadoId") Long userLogado, @RequestParam(required = false) String busca)
+    @RequestMapping("/{logadoId}")
+    public Set<UserAccount> findNoFriends(@PathVariable("logadoId") Long userLogado, @RequestParam("adicionar") String busca)
             throws Exception {
         try {
             return userService.findUsers(userLogado, busca);
@@ -102,7 +102,7 @@ public class ApiRestController {
         }
     }
 
-    @GetMapping("/{logadoId}/adicionar")
+    @GetMapping("/{logadoId}/newcontact")
     public Set<UserAccount> findNoContacts(@PathVariable("logadoId") Long userLogado)
             throws Exception {
         try {

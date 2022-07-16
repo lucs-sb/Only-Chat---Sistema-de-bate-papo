@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -175,23 +176,25 @@ public class UserAccountService {
     @Transactional(readOnly = true)
     public Set<UserAccount> findUsers(Long userLogado, String busca) throws Exception {
         try {
+            Set<UserAccount> contacts = new HashSet<>();
+
             Optional<UserAccount> logado = userRepository.findById(userLogado);
             if (logado.isEmpty())
                 throw new UserNotFoundException("Usuário logado não encontrado");
 
-            if (busca == null)
-                return findNoContacts(logado.get().getId());
-
             Set<UserAccount> users = userRepository.findUsers(userLogado, busca);
 
-            for (UserAccount user : users) {
-                for (Contact contact : logado.get().getContacts()) {
-                    if (contact != null && contact.getFriend().getId().equals(user.getId())) {
-                        users.remove(user);
+            for (UserAccount user : users){
+                for (Contact contact : logado.get().getContacts()){
+                    if (contact != null && contact.getFriend().getId().equals(user.getId())){
+                        contacts.add(user);
                         break;
                     }
                 }
             }
+
+            if (!contacts.isEmpty())
+                users.removeAll(contacts);
 
             return users;
 
@@ -203,6 +206,8 @@ public class UserAccountService {
     @Transactional(readOnly = true)
     public Set<UserAccount> findNoContacts(Long userLogado) throws Exception{
         try {
+            Set<UserAccount> contacts = new HashSet<>();
+
             Optional<UserAccount> logado = userRepository.findById(userLogado);
             if (logado.isEmpty())
                 throw new UserNotFoundException("Usuario logado não encontrado");
@@ -212,14 +217,15 @@ public class UserAccountService {
             for (UserAccount user : users){
                 for (Contact contact : logado.get().getContacts()){
                     if (contact != null && contact.getFriend().getId().equals(user.getId())){
-                        users.remove(user);
+                        contacts.add(user);
                         break;
                     }
                 }
             }
 
-            if (users.isEmpty())
-                throw new UserNotFoundException("teste");
+            if (!contacts.isEmpty())
+                users.removeAll(contacts);
+
             return users;
         }
         catch (Exception e){
