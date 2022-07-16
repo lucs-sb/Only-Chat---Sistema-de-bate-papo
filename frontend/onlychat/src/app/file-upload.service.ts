@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 
 export class FileUploadService {
-  private baseUrl = 'https://web-only-chat.herokuapp.com/api/user';
+  /*private baseUrl = 'https://web-only-chat.herokuapp.com/api/user';
 
   constructor(private http: HttpClient) { }
 
@@ -21,5 +21,5 @@ export class FileUploadService {
       responseType: 'json'
     });
     return this.http.request(req);
-  }
+  }*/
 }

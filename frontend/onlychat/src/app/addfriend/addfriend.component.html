@@ -24,6 +24,7 @@
         <img class="card-img-top" src="{{friend.url_photo}}" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title text-center">{{friend.name}}</h5>
+          <h5 class="card-title text-center">{{friend.gender}}</h5>
           <div class="d-flex justify-content-around mt-3">
             <button id="{{friend.id}}" (click)="addfriend($event)" class="btn btn-success">Adicionar</button>
           </div>

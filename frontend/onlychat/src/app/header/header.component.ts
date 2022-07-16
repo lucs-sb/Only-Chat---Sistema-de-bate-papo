@@ -10,7 +10,6 @@ import { StorageService } from '../storage.service';
 export class HeaderComponent implements OnInit {
   username: string = localStorage.getItem("userName")!;
 
-
   constructor(private loginService: LoginService) {
 
   }

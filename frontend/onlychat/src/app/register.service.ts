@@ -1,11 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterService {
-  private API_USER_ME: string = 'http://localhost:8080/api/user/cadastrar';
+  private API_USER_ME: string = 'https://web-only-chat.herokuapp.com/api/user';
 
   constructor(private http: HttpClient) { }
 

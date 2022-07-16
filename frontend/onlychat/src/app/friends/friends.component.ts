@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FriendsService } from '../friends.service';
-import { Friend } from 'src/app/Friend';
 import { NotifierService } from 'angular-notifier';
 import { StorageService } from '../storage.service';
+import { User } from '../user';
 
 @Component({
   selector: 'app-friends',
@@ -12,7 +12,7 @@ import { StorageService } from '../storage.service';
 export class FriendsComponent implements OnInit {
   private notifier: NotifierService;
   removeFriendId = 0;
-  friends: Friend[] = [];
+  friends: User[] = [];
   findName: string = '';
 
   /**

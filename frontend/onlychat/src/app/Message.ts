@@ -1,7 +1,8 @@
+import { Contact } from "../app/contact";
+
 export interface Message {
   id: Number;
-  sender: Number;
-  receiver: Number;
   message: String;
   date_time: String;
+  contact_id: Contact;
 }

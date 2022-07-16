@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotifierService } from 'angular-notifier';
 import { AddfriendService } from '../addfriend.service';
-import { Friend } from '../Friend';
+import { User } from '../user';
 
 @Component({
   selector: 'app-addfriend',
@@ -10,7 +10,7 @@ import { Friend } from '../Friend';
 })
 export class AddfriendComponent implements OnInit {
   private notifier: NotifierService;
-  friends: Friend[] = [];
+  friends: User[] = [];
   findName: string = '';
 
   /**
@@ -23,6 +23,7 @@ export class AddfriendComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.addfriendService.getAllNoFriends().subscribe(friends => (this.friends = friends));
   }
 
   findNewFriends() {

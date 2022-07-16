@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChatService } from '../chat.service';
-import { Friend } from '../Friend';
 import { Message } from '../Message';
 import { MessagePage } from '../messagePage';
 
@@ -15,12 +14,11 @@ export class ChatComponent implements OnInit {
   userChatName: string = localStorage.getItem("ChatUserName")!
   userChatEmail: string = localStorage.getItem("ChatUserEmail")!
   userChatGender: string = localStorage.getItem("ChatUserGender")!
-  photo: string = localStorage.getItem("ChatUserPhoto")!
+  userChatPhoto: string = localStorage.getItem("ChatUserPhoto")!
   messageContent: string = ''
   messages: Message[] = [];
   messagePage: MessagePage | undefined;
   pageNumber: number = 0;
-  size: number = 12;
   @ViewChild('scrollMe')
   
   private myScrollContainer!: ElementRef;
@@ -31,14 +29,15 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    window.scrollTo(0, document.body.scrollHeight);
     this.getFriendForCard()
     this.getMessages()
     setInterval(() => {
      this.getMessages()
+     window.scrollTo(0, document.body.scrollHeight);
     }, 2000);
   }
   ngAfterViewChecked() {
-    this.pageNumber++;
     this.scrollToBottom();
 }
 
@@ -50,6 +49,7 @@ export class ChatComponent implements OnInit {
     } else {
         this.disableScrollDown = true
     }
+    this.pageNumber = this.pageNumber + 1;
 }
 
 

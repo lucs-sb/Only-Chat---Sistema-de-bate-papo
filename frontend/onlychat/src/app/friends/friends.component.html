@@ -26,9 +26,9 @@
       <img class="card-img-top" src="{{friend.url_photo}}" alt="Card image cap">
       <div class="card-body">
         <input type="hidden" [(ngModel)]="friend.id">
-        <h5 class="card-title text-center">{{friend.nome}}</h5>
+        <h5 class="card-title text-center">{{friend.name}}</h5>
         <div class="d-flex justify-content-around mt-3">
-          <a (click)="setEmailToChat($event)" id="{{friend.email}}" routerLink="/friends/{{friend.friend}}/chat"
+          <a (click)="setEmailToChat($event)" id="{{friend.email}}" routerLink="/friends/{{friend.id}}/chat"
             class="btn btn-success">Conversar</a>
           <a routerLink="#" class="btn btn-danger" (click)="setRemoveId($event)" id="{{friend.id}}" data-bs-toggle="modal"
             data-bs-target="#exampleModal">Remover</a>
