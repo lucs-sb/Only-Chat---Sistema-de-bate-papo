@@ -1,6 +1,5 @@
 package api.onlychat.controllers;
 
-import api.onlychat.entities.Contact;
 import api.onlychat.entities.Message;
 import api.onlychat.services.MessageService;
 import api.onlychat.services.UserAccountService;
