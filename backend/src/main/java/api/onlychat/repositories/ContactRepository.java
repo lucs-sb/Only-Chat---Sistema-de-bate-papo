@@ -13,23 +13,4 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
 
     @Query(value = "SELECT * FROM contact WHERE principal = :principal AND friend = :friend", nativeQuery = true)
     Contact findContactByPrincipalAndFriend(Long principal, Long friend);
-
-//    Contact findContactByPrincipalAndFriend(Long principal, Long friend);
-//
-//
-//    @Query(value = "SELECT c.* FROM contact AS c " +
-//            "INNER JOIN contact_message AS cm ON cm.contact_id = c.id " +
-//            "INNER JOIN message AS m ON m.id = cm.message_id " +
-//            "WHERE c.principal = :paramPrincipal " +
-//            "AND (m.sender = :paramPrincipal OR m.receiver = :paramPrincipal) " +
-//            "AND m.message LIKE CONCAT('%',:paramBusca,'%')", nativeQuery = true)
-//    Set<Contact> findContactsWithChats(@Param("paramPrincipal") Long paramPrincipal, @Param("paramBusca") String paramBusca);
-//
-//    @Query(value = "SELECT c.* FROM contact AS c " +
-//            "INNER JOIN contact_message AS cm ON cm.contact_id = c.id " +
-//            "INNER JOIN message AS m ON m.id = cm.message_id " +
-//            "WHERE m.sender = :paramUserLogado " +
-//            "OR m.receiver = :paramUserLogado " +
-//            "ORDER BY m.date_time DESC", nativeQuery = true)
-//    Set<Contact> findByChats(Long paramUserLogado);
 }

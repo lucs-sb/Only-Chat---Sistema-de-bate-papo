@@ -156,15 +156,15 @@ public class UserAccountService {
                 throw new UserNotFoundException("Usuário logado não encontrado");
 
             Set<UserAccount> contacts = userRepository.findContacts(user.get().getId(), busca);
-            //Set<Contact> contactsWithChats = contactRepository.findContactsWithChats(userLogado, busca);
+            Set<UserAccount> contactsWithChats = userRepository.findContactsWithChats(userLogado, busca);
 
-//            if (!contactsWithChats.isEmpty()) {
-//                for (Contact contact : contactsWithChats) {
-//                    contacts.removeIf(contact2 -> contact2 != null && contact.getId().equals(contact2.getId()));
-//                }
-//            }
-//
-//            contacts.addAll(contactsWithChats);
+            if (!contactsWithChats.isEmpty()) {
+                for (UserAccount contact : contactsWithChats) {
+                    contacts.removeIf(contact2 -> contact2 != null && contact.getId().equals(contact2.getId()));
+                }
+            }
+
+            contacts.addAll(contactsWithChats);
 
             return contacts;
 
