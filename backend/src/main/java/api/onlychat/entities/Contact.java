@@ -1,6 +1,7 @@
 package api.onlychat.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,17 +15,16 @@ public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long principal;
-    private Long friend;
-    private String nome;
-    private String email;
-    @Column(length = 2000)
-    private String url_photo;
-    @Lob
-    private byte[] photo;
+    @ManyToOne
+    @JoinColumn(name = "principal", nullable = false)
+    private UserAccount principal;
+    @ManyToOne
+    @JoinColumn(name = "friend", nullable = false)
+    private UserAccount friend;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime date_time;
 
+    @JsonIgnore
     @OneToMany(cascade = { CascadeType.ALL })
     @JoinTable(
             name = "contact_message",
@@ -34,6 +34,13 @@ public class Contact {
     Set<Message> messages = new HashSet<>();
 
     public Contact() {
+    }
+
+    public Contact(Long id, UserAccount principal, UserAccount friend, LocalDateTime date_time) {
+        this.id = id;
+        this.principal = principal;
+        this.friend = friend;
+        this.date_time = date_time;
     }
 
     public Long getId() {
@@ -52,43 +59,19 @@ public class Contact {
         this.date_time = date_time;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String name) {
-        this.nome = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public byte[] getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
-    }
-
-    public Long getPrincipal() {
+    public UserAccount getPrincipal() {
         return principal;
     }
 
-    public void setPrincipal(Long principal) {
+    public void setPrincipal(UserAccount principal) {
         this.principal = principal;
     }
 
-    public Long getFriend() {
+    public UserAccount getFriend() {
         return friend;
     }
 
-    public void setFriend(Long friend) {
+    public void setFriend(UserAccount friend) {
         this.friend = friend;
     }
 
@@ -98,13 +81,5 @@ public class Contact {
 
     public void setMessages(Set<Message> messages) {
         this.messages = messages;
-    }
-
-    public String getUrl_photo() {
-        return url_photo;
-    }
-
-    public void setUrl_photo(String url_photo) {
-        this.url_photo = url_photo;
     }
 }

@@ -1,6 +1,7 @@
 package api.onlychat.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,8 +13,9 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long sender;
-    private Long receiver;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "contact_id", updatable = false, nullable = false)
+    private Contact contact_id;
     private String message;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime date_time;
@@ -21,10 +23,9 @@ public class Message {
     public Message() {
     }
 
-    public Message(Long id, Long sender, Long receiver, String message, LocalDateTime date_time) {
+    public Message(Long id, Contact contact_id, String message, LocalDateTime date_time) {
         this.id = id;
-        this.sender = sender;
-        this.receiver = receiver;
+        this.contact_id = contact_id;
         this.message = message;
         this.date_time = date_time;
     }
@@ -37,20 +38,12 @@ public class Message {
         this.id = id;
     }
 
-    public Long getSender() {
-        return sender;
+    public Contact getContact_id() {
+        return contact_id;
     }
 
-    public void setSender(Long sender) {
-        this.sender = sender;
-    }
-
-    public Long getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(Long receiver) {
-        this.receiver = receiver;
+    public void setContact_id(Contact contact_id) {
+        this.contact_id = contact_id;
     }
 
     public String getMessage() {

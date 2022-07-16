@@ -9,6 +9,8 @@ import { StorageService } from './storage.service';
 })
 export class LoginService {
 
+  private API_USER_ME: string = 'http://localhost:8080/api/user/login';
+
   constructor(private http: HttpClient, private localStorage: StorageService) { }
 
   login(username: string, password: string) {

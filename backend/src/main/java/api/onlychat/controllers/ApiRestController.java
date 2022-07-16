@@ -1,6 +1,5 @@
 package api.onlychat.controllers;
 
-import api.onlychat.entities.Contact;
 import api.onlychat.entities.Message;
 import api.onlychat.services.MessageService;
 import api.onlychat.services.UserAccountService;
@@ -15,15 +14,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api")
 public class ApiRestController {
     @Autowired
     private UserAccountService userService;
     @Autowired
     private MessageService messageService;
 
-    @GetMapping("/login")
-    public UserAccount login(@RequestParam("email") String email) throws Exception {
+    @GetMapping("/login/{email}")
+    public UserAccount login(@PathVariable("email") String email) throws Exception {
         try {
             return userService.getUserByEmail(email);
         } catch (Exception e) {
@@ -31,7 +30,7 @@ public class ApiRestController {
         }
     }
 
-    @PostMapping("/cadastrar")
+    @PostMapping("/user")
     @ResponseStatus(HttpStatus.CREATED)
     public void addUserAccount(@RequestBody UserAccount user) throws Exception {
         try {
@@ -41,19 +40,19 @@ public class ApiRestController {
         }
     }
 
-    @PostMapping("/upload/{email}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void uploadPhoto(@PathVariable String email, @RequestParam("file") MultipartFile file) throws Exception{
-        try {
-            userService.uploadPhoto(email, file);
-        }
-        catch (Exception e){
-            throw new Exception(e);
-        }
-    }
+//    @PostMapping("/upload/{email}")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public void uploadPhoto(@PathVariable String email, @RequestParam("file") MultipartFile file) throws Exception{
+//        try {
+//            userService.uploadPhoto(email, file);
+//        }
+//        catch (Exception e){
+//            throw new Exception(e);
+//        }
+//    }
 
-    @GetMapping("/{id}/contact")
-    public Set<Contact> getContacts(@PathVariable("id") Long userLogado) throws Exception {
+    @GetMapping("/{logadoId}/contact")
+    public Set<UserAccount> getContacts(@PathVariable("logadoId") Long userLogado) throws Exception {
         try {
             return userService.getContacts(userLogado);
         } catch (Exception e) {
@@ -61,9 +60,9 @@ public class ApiRestController {
         }
     }
 
-    @PostMapping("/{id}/contact")
+    @PostMapping("/{logadoId}/newcontact")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addContact(@PathVariable("id") Long userLogado, @RequestBody UserAccount newContact) throws Exception {
+    public void addContact(@PathVariable("logadoId") Long userLogado, @RequestBody UserAccount newContact) throws Exception {
         try {
             userService.addContact(userLogado, newContact);
         } catch (Exception e) {
@@ -71,19 +70,19 @@ public class ApiRestController {
         }
     }
 
-    @DeleteMapping("/{user}/contact/{contact}")
+    @DeleteMapping("/{logadoId}/contact/{friendId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteContact(@PathVariable("user") Long userLogado, @PathVariable("contact") Long contact)
+    public void deleteContact(@PathVariable("logadoId") Long userLogado, @PathVariable("friendId") Long friendId)
             throws Exception {
         try {
-            userService.deleteContact(userLogado, contact);
+            userService.deleteContact(userLogado, friendId);
         } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
-    @RequestMapping("/{id}/busca")
-    public Set<Contact> findContacts(@PathVariable("id") Long userLogado, @RequestParam("busca") String busca)
+    @RequestMapping(value = "/{logadoId}/busca")
+    public Set<UserAccount> findContacts(@PathVariable("logadoId") Long userLogado, @RequestParam("busca") String busca)
             throws Exception {
         try {
             return userService.findContacts(userLogado, busca);
@@ -92,11 +91,21 @@ public class ApiRestController {
         }
     }
 
-    @RequestMapping("/{id}/adicionar")
-    public Set<UserAccount> findUsers(@PathVariable("id") Long userLogado, @RequestParam("adicionar") String busca)
+    @RequestMapping("/{logadoId}")
+    public Set<UserAccount> findNoFriends(@PathVariable("logadoId") Long userLogado, @RequestParam("adicionar") String busca)
             throws Exception {
         try {
             return userService.findUsers(userLogado, busca);
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
+
+    @GetMapping("/{logadoId}/newcontact")
+    public Set<UserAccount> findNoContacts(@PathVariable("logadoId") Long userLogado)
+            throws Exception {
+        try {
+            return userService.findNoContacts(userLogado);
         } catch (Exception e) {
             throw new Exception(e);
         }
@@ -112,12 +121,17 @@ public class ApiRestController {
         }
     }
 
-    @PostMapping("/message")
-    public void sendMessage(@RequestBody Message message) throws Exception {
+    @PostMapping("/{userLogado}/message/{friend}")
+    public void sendMessage(@RequestBody Message message, @PathVariable Long userLogado, @PathVariable Long friend) throws Exception {
         try {
-            messageService.sendMessage(message);
+            messageService.sendMessage(message, userLogado, friend);
         } catch (Exception e) {
             throw new Exception(e);
         }
     }
+//
+//    @DeleteMapping("/{id}")
+//    public void deleteUser(@PathVariable Long id){
+//        userService.deleteUser(id);
+//    }
 }
