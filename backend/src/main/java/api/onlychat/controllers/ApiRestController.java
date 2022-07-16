@@ -122,10 +122,10 @@ public class ApiRestController {
         }
     }
 
-    @PostMapping("/message")
-    public void sendMessage(@RequestBody Message message) throws Exception {
+    @PostMapping("/{userLogado}/message/{friend}")
+    public void sendMessage(@RequestBody Message message, @PathVariable Long userLogado, @PathVariable Long friend) throws Exception {
         try {
-            messageService.sendMessage(message);
+            messageService.sendMessage(message, userLogado, friend);
         } catch (Exception e) {
             throw new Exception(e);
         }

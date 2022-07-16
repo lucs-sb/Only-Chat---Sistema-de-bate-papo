@@ -16,10 +16,10 @@ public class Contact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "principal")
+    @JoinColumn(name = "principal", nullable = false)
     private UserAccount principal;
     @ManyToOne
-    @JoinColumn(name = "friend")
+    @JoinColumn(name = "friend", nullable = false)
     private UserAccount friend;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime date_time;

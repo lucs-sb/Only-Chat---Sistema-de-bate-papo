@@ -12,10 +12,19 @@ import java.util.Set;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-    @Query(value = "SELECT m.* FROM message AS m /*#pageable*/" +
-            "INNER JOIN contact_message AS cm ON cm.message_id = m.id " +
-            "WHERE (m.sender = :paramSender AND m.receiver = :paramReceiver) " +
-            "OR (m.sender = :paramReceiver AND m.receiver = :paramSender) " +
-            "ORDER BY m.date_time ASC", nativeQuery = true)
+    @Query(value = "SELECT M.* FROM message M " +
+            "INNER JOIN contact_message CM ON CM.message_id = M.id " +
+            "INNER JOIN contact C ON C.id = CM.contact_id " +
+            "WHERE (C.principal = :paramSender AND C.friend = :paramReceiver) " +
+            "OR (C.principal = :paramReceiver AND C.friend = :paramSender) " +
+            "ORDER BY M.date_time ASC /*#pageable*/",
+            countQuery = "SELECT M.* FROM message M " +
+                    "INNER JOIN contact_message CM ON CM.message_id = M.id " +
+                    "INNER JOIN contact C ON C.id = CM.contact_id " +
+                    "WHERE (C.principal = :paramSender AND C.friend = :paramReceiver) " +
+                    "OR (C.principal = :paramReceiver AND C.friend = :paramSender) " +
+                    "ORDER BY M.date_time ASC /*#pageable*/", nativeQuery = true)
     Page<Message> getAllChatMessages(Pageable pageable, Long paramSender, Long paramReceiver);
+
+    //--#pageable\n for postgresql
 }
