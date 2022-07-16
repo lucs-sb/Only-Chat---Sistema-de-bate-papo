@@ -38,13 +38,13 @@ export class ChatComponent implements OnInit {
     }, 2000);
   }
   ngAfterViewChecked() {
-    this.pageNumber++;
     this.scrollToBottom();
 }
 
  onScroll() {
     let element = this.myScrollContainer.nativeElement
     let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight
+    this.pageNumber++;
     if (this.disableScrollDown && atBottom) {
         this.disableScrollDown = false
     } else {
