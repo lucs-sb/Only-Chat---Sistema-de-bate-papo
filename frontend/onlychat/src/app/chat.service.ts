@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
-import { Message } from './Message';
 import { MessagePage } from './messagePage';
 import { User } from './user';
 
@@ -11,8 +10,10 @@ import { User } from './user';
   providedIn: 'root'
 })
 export class ChatService {
+
   private API_USER_LOGIN: string = 'https://web-only-chat.herokuapp.com/api/login/';
   private API_MESSAGE: string = 'https://web-only-chat.herokuapp.com/api/';
+
 
   constructor(private http: HttpClient, private localStorage: StorageService) {
     this.getFriendForCard()
