@@ -1,19 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Friend } from './Friend';
 import { tap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
-import { Message } from './Message';
 import { MessagePage } from './messagePage';
+import { User } from './user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  private API_USER_LOGIN: string = 'http://localhost:8080/api/user/login';
-  private API_SEND_MESSAGE: string = 'http://localhost:8080/api/user/message';
+  private API_USER_LOGIN: string = 'https://web-only-chat.herokuapp.com/api/login/';
+  private API_MESSAGE: string = 'https://web-only-chat.herokuapp.com/api/';
+
 
   constructor(private http: HttpClient, private localStorage: StorageService) {
     this.getFriendForCard()
@@ -26,8 +26,8 @@ export class ChatService {
       };
 
       return this.http.get<any>(this.API_USER_LOGIN+`${localStorage.getItem("EmailToChat")!}`, httpOptions).pipe(
-        tap(response => {
-          this.localStorage.set('ChatUserId', response.id);
+        tap((response: User) => {
+          this.localStorage.set('ChatUserId', response.id.toString());
           this.localStorage.set('ChatUserEmail', response.email);
           this.localStorage.set('ChatUserName', response.name);
           this.localStorage.set('ChatUserGender', response.gender);
@@ -41,12 +41,10 @@ export class ChatService {
   sendMessage(content: any) {
     {
       var body = {
-        'sender': localStorage.getItem("userId"),
-        'receiver': localStorage.getItem("ChatUserId"),
         'message': content
       }
 
-      return this.http.post<any>(this.API_SEND_MESSAGE, body).pipe(
+      return this.http.post<any>(this.API_MESSAGE+`${localStorage.getItem("userId")}/message/${localStorage.getItem("ChatUserId")}`, body).pipe(
         tap(response => {
           return response
         })
@@ -56,8 +54,7 @@ export class ChatService {
 
   getMessages(pageNumber: number): Observable<MessagePage> {
     {
-      var url = `http://localhost:8080/api/user/${localStorage.getItem("userId")}/message/${localStorage.getItem("ChatUserId")}?size=10&page=${pageNumber}`
-      return this.http.get<MessagePage>(url)
+      return this.http.get<MessagePage>(this.API_MESSAGE+`${localStorage.getItem("userId")}/message/${localStorage.getItem("ChatUserId")}?size=10&page=${pageNumber}`)
     }
   }
 }

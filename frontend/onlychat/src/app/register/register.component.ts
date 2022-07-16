@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit {
   name: string = '';
   confirmPassword: string = '';
   url_photo: string = '';
-  currentFile?: File;
+  //currentFile?: File;
 
   /**
    * Constructor
@@ -34,9 +34,9 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  selectFile(event: any): void {
-    this.currentFile = event.target.files[0];
-  }
+  //selectFile(event: any): void {
+  //  this.currentFile = event.target.files[0];
+  //}
 
   register(): void {
 
@@ -49,12 +49,12 @@ export class RegisterComponent implements OnInit {
 
       this.loginService.register(this.email, this.name, this.gender, this.password, this.url_photo).subscribe((user) => {
         
-        if (this.currentFile && this.url_photo == '') {
+        /*if (this.currentFile && this.url_photo == '') {
           this.uploadService.upload(this.email, this.currentFile).subscribe(),
             () => {
               throw new Error('Não foi possível realizar o upload da foto');
             };
-        }
+        }*/
 
         this.router.navigate(['/']);
       }, () => {

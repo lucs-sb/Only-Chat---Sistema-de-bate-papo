@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Friend } from './Friend';
+import { User } from './user';
 
 
 @Injectable({
@@ -10,16 +10,16 @@ import { Friend } from './Friend';
 export class FriendsService {
 
   constructor(private http: HttpClient) { }
-  private API_USER_ME: string = `http://localhost:8080/api/user/${localStorage.getItem("userId")}/contact`;
-  private API_FIND_BY_NAME: string = `http://localhost:8080/api/user/${localStorage.getItem("userId")}/busca`;
+  private API_USER_ME: string = `https://web-only-chat.herokuapp.com/api/${localStorage.getItem("userId")}/contact`;
+  private API_FIND_BY_NAME: string = `https://web-only-chat.herokuapp.com/api/${localStorage.getItem("userId")}/busca`;
 
-  getFriends(): Observable<Friend[]> {
+  getFriends(): Observable<User[]> {
     {
       const httpOptions = {
         headers: { authorization: 'Basic ' + localStorage.getItem("authorization") },
       };
 
-      return this.http.get<Friend[]>(this.API_USER_ME, httpOptions)
+      return this.http.get<User[]>(this.API_USER_ME, httpOptions)
     }
   }
 
@@ -32,14 +32,14 @@ export class FriendsService {
 
   }
 
-  findFriends(findString: any): Observable<Friend[]> {
+  findFriends(findString: any): Observable<User[]> {
     {
       const httpOptions = {
         headers: { authorization: 'Basic ' + localStorage.getItem("authorization") },
         params: { 'busca': findString }
       };
 
-      return this.http.get<Friend[]>(this.API_FIND_BY_NAME, httpOptions)
+      return this.http.get<User[]>(this.API_FIND_BY_NAME, httpOptions)
     }
   }
 }
